@@ -2,6 +2,9 @@
 Client for DokuWiki written in QT.
 
 # TODO
+ - [x] Editing shortcuts (bold, code, etc...)
+ - [x] Navigation/edit mode
+ - [ ] Custom editing shorcuts
  - [ ] Settings
  - [ ] Change wiki address
 [ ] Option to disable passing links that are  - outside of wiki's address to system
