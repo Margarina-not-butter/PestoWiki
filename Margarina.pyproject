@@ -1,0 +1,9 @@
+{
+    "files": [
+        "mainwindow.py",
+        "form.ui",
+        "settings.ui",
+        "logo.png",
+        "res.qrc"
+    ]
+}
