@@ -4,5 +4,7 @@
         <file>translations/pt.qm</file>
         <file>translations/jp.qm</file>
         <file>logo.png</file>
+        <file>constants.json</file>
+        <file>default.js</file>
     </qresource>
 </RCC>

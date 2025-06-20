@@ -50,8 +50,13 @@
    </widget>
    <widget class="QMenu" name="menuWiki">
     <property name="title">
-     <string>Wiki</string>
+     <string>Ir</string>
     </property>
+    <addaction name="actionCustomizado"/>
+    <addaction name="actionPesquisar"/>
+    <addaction name="actionVoltar"/>
+    <addaction name="actionPosterior"/>
+    <addaction name="actionRecarregar"/>
    </widget>
    <widget class="QMenu" name="menuAjuda">
     <property name="locale">
@@ -65,43 +70,8 @@
    </widget>
    <widget class="QMenu" name="menuInserir">
     <property name="title">
-     <string>Inserir</string>
+     <string>Atalhos</string>
     </property>
-    <widget class="QMenu" name="menuCabe_alho">
-     <property name="title">
-      <string>Cabeçalho</string>
-     </property>
-     <widget class="QMenu" name="menuNivel">
-      <property name="title">
-       <string>Nivel</string>
-      </property>
-      <addaction name="action1"/>
-      <addaction name="action2"/>
-      <addaction name="action3"/>
-      <addaction name="action4"/>
-      <addaction name="action5"/>
-      <addaction name="action6"/>
-     </widget>
-     <addaction name="actionMesmo_nivel"/>
-     <addaction name="actionNivel_abaixo"/>
-     <addaction name="actionNivel_acima"/>
-     <addaction name="menuNivel"/>
-     <addaction name="separator"/>
-    </widget>
-    <widget class="QMenu" name="menuLink_2">
-     <property name="title">
-      <string>Link</string>
-     </property>
-     <addaction name="actionInterno_2"/>
-     <addaction name="actionExterno"/>
-    </widget>
-    <addaction name="menuLink_2"/>
-    <addaction name="actionItalico"/>
-    <addaction name="actionNegrito"/>
-    <addaction name="actionSublinhado"/>
-    <addaction name="actionC_digo"/>
-    <addaction name="actionC_digo_bloco"/>
-    <addaction name="menuCabe_alho"/>
    </widget>
    <widget class="QMenu" name="menuModo">
     <property name="title">
@@ -250,6 +220,31 @@
   <action name="actionOp_es_de_desenvolvedor">
    <property name="text">
     <string>Opções de desenvolvedor</string>
+   </property>
+  </action>
+  <action name="actionCustomizado">
+   <property name="text">
+    <string>Customizado</string>
+   </property>
+  </action>
+  <action name="actionPesquisar">
+   <property name="text">
+    <string>Pesquisar</string>
+   </property>
+  </action>
+  <action name="actionVoltar">
+   <property name="text">
+    <string>Anterior</string>
+   </property>
+  </action>
+  <action name="actionPosterior">
+   <property name="text">
+    <string>Posterior</string>
+   </property>
+  </action>
+  <action name="actionRecarregar">
+   <property name="text">
+    <string>Recarregar</string>
    </property>
   </action>
  </widget>

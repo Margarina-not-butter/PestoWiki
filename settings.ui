@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>364</width>
-    <height>377</height>
+    <width>370</width>
+    <height>857</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -21,6 +21,9 @@
   </property>
   <property name="windowIcon">
    <iconset theme="QIcon::ThemeIcon::FolderOpen"/>
+  </property>
+  <property name="windowOpacity">
+   <double>0.900000000000000</double>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -66,6 +69,16 @@
       <locale language="Portuguese" country="Brazil"/>
      </property>
     </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbSearchAddress">
+     <property name="text">
+      <string>Endereço de pesquisa</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="leSearchAddress"/>
    </item>
    <item>
     <widget class="QLabel" name="labelBookmarks">
@@ -118,6 +131,19 @@
          </property>
         </widget>
        </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </item>
     </layout>
@@ -131,6 +157,123 @@
    </item>
    <item>
     <widget class="QPlainTextEdit" name="pteCustomJS"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbKeyCombos">
+     <property name="text">
+      <string>Atalhos do teclado</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QTableWidget" name="twKeyCombos">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+       </property>
+       <column>
+        <property name="text">
+         <string>Nome</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Combinação</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Código</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pbKeyCombosDelete">
+         <property name="text">
+          <string>Deletar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pbKeyCombosAdd">
+         <property name="text">
+          <string>Adicionar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pbKeyCombosEdit">
+         <property name="text">
+          <string>Editar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="lbVersion">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnUpdater">
+       <property name="text">
+        <string>Atualizações</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
