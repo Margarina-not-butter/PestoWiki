@@ -18,28 +18,14 @@ Multi-platform customizable client for wikis written in Python using PySide6 (QT
  - [ ] Share button
 
 ## How to compile
-First of all, clone the repo and install `requirements.txt` wth `pip install -r requirements.txt`.
-Then run the following script:
-### On Linux
-Compile **all** the translation files with `buildlang.sh` (portuguese.ts > pt, english.ts > en, japanese.ts > jp), then generate `resources.py` using `buildresource.sh`.
+- Clone the repo and install `requirements.txt` in a venv (optional) with:
 ```
-python -m PyInstaller --windowed --icon=favicon.ico --name "MargarinaWikiDesktop" \
---add-data="resources.py:." \
---add-data="Updater.py:." \
---add-data="Settings.py:." \
---add-data="settings.ui:." \
---add-data="updater.ui:." \
-mainwindow.py
+python -m venv .venv
+pip install -r requirements.txt
 ```
-### On Windows
-Currently there are no scripts for compiling translations and resources files on Windows, but I guess that the commands from the scripts for Linux should work.
+- Generate `resources.py` using `buildresource.sh`. (Currently there are no scripts for compiling translations and resources files on Windows, but I guess that the commands from the scripts for Linux should work.)
+- Optionally, compile it with PyInstaller:
 ```
-python -m PyInstaller --windowed --icon=favicon.ico --name "MargarinaWikiDesktop"^
- --add-data="resources.py;."^
- --add-data="Updater.py;."^
- --add-data="Settings.py;."^
- --add-data="settings.ui;."^
- --add-data="updater.ui;."^
- mainwindow.py
+python -m PyInstaller margarina.spec
 ```
 It will be compiled to `./dist`.
