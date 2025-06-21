@@ -1,4 +1,10 @@
-out/
-__pycache__/
-.idea
-Margarina.pyproject.user
+dist/
+build/
+*/__pycache__
+*/.idea
+*/Margarina.pyproject.user
+Client/resources/translations/
+Client/resources.py
+Client/rc_res.py
+Client/ui_*.py
+*.qtcreator/

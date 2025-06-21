@@ -1,0 +1,10 @@
+<RCC>
+    <qresource>
+        <file>constants.json</file>
+        <file>default.js</file>
+        <file>logo.png</file>
+        <file>translations/portuguese.qm</file>
+        <file>translations/english.qm</file>
+        <file>translations/japanese.qm</file>
+    </qresource>
+</RCC>

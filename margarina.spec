@@ -2,16 +2,16 @@
 
 
 a = Analysis(
-    ['mainwindow.py'],
+    ['Client/margarina.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('Client/resources.py', '.'), ('Client/Settings.py', '.'), ('Client/settings.ui', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    noarchive=True,
+    noarchive=False,
     optimize=0,
 )
 pyz = PYZ(a.pure)
@@ -19,20 +19,26 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
-    a.binaries,
-    a.datas,
-    [('v', None, 'OPTION')],
-    name='mainwindow',
-    debug=True,
+    [],
+    exclude_binaries=True,
+    name='margarina',
+    debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    upx_exclude=[],
-    runtime_tmpdir=None,
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+)
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='margarina',
 )

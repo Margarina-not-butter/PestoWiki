@@ -5,7 +5,6 @@ import resources
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QApplication, QInputDialog, QTableWidgetItem
 from PySide6.QtCore import QFile, QIODevice, Qt, QSettings, QUrl, QTranslator, QCoreApplication
-from Updater import Updater
 
 class Settings:
     def __init__(self, app, window):
@@ -84,8 +83,8 @@ class Settings:
         settings_dialog.btnFavoritesDelete.clicked.connect(lambda: remove_favorite())
         settings_dialog.btnFavoritesAdd.clicked.connect(lambda: add_favorite())
         settings_dialog.btnFavoritesEdit.clicked.connect(lambda: edit_favorite())
-        updater = Updater(self.version)
-        settings_dialog.btnUpdater.clicked.connect(lambda: updater.open_updater())
+        # updater = Updater(self.version)
+        # settings_dialog.btnUpdater.clicked.connect(lambda: updater.open_updater())
 
         def remove_favorite():
             settings_dialog.lwFavorites.takeItem(settings_dialog.lwFavorites.row(settings_dialog.lwFavorites.currentItem()))
@@ -120,9 +119,9 @@ class Settings:
             self.load_favorites()
 
         languages = {
-            ":/translations/pt.qm": "Português",
-            ":/translations/en.qm": "English",
-            ":/translations/jp.qm": "Japanese"
+            ":/translations/portuguese.qm": "Português",
+            ":/translations/english.qm": "English",
+            ":/translations/japanese.qm": "Japanese"
         }
 
         for path, lang in languages.items():
