@@ -21,6 +21,7 @@ Multi-platform customizable client for wikis written in Python using PySide6 (QT
 First of all, clone the repo and install `requirements.txt` wth `pip install -r requirements.txt`.
 Then run the following script:
 ### On Linux
+Compile **all** the translation files with `buildlang.sh` (portuguese.ts > pt, english.ts > en, japanese.ts > jp), then generate `resources.py` using `buildresource.sh`.
 ```
 python -m PyInstaller --windowed --icon=favicon.ico --name "MargarinaWikiDesktop" \
 --add-data="resources.py:." \
@@ -31,6 +32,7 @@ python -m PyInstaller --windowed --icon=favicon.ico --name "MargarinaWikiDesktop
 mainwindow.py
 ```
 ### On Windows
+Currently there are no scripts for compiling translations and resources files on Windows, but I guess that the commands from the scripts for Linux should work.
 ```
 python -m PyInstaller --windowed --icon=favicon.ico --name "MargarinaWikiDesktop"^
  --add-data="resources.py;."^
