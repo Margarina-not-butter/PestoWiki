@@ -5,7 +5,7 @@ Multi-platform customizable client for wikis written in Python using PySide6 (QT
 
 ## Features
  - [x] Editing shortcuts (bold, code, etc...)
- - [x] Navigation/edit mode
+ - [x] Navigation/edit mode (toggle user-select)
  - [x] Custom editing shorcuts
  - [x] Settings
  - [x] Change wiki address
@@ -15,6 +15,7 @@ Multi-platform customizable client for wikis written in Python using PySide6 (QT
  - [x] JS injection
  - [x] Custom JS library with wiki related functions
  - [x] Favorites
+ - [x] Check for updates
  - [ ] Share button
 
 ## How to compile
