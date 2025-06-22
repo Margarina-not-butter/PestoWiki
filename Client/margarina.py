@@ -2,13 +2,12 @@
 import sys
 import os
 import json
-import logging
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog, QTableWidgetItem
+from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QUrl, QSettings, Qt, QTranslator, QFile, QIODevice, QCoreApplication
+from PySide6.QtCore import QUrl, QTranslator, QFile, QIODevice, QCoreApplication
 from PySide6.QtGui import QDesktopServices, QAction, QIcon
 from Settings import Settings
 

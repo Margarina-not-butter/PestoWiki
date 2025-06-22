@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>370</width>
-    <height>857</height>
+    <width>386</width>
+    <height>509</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,121 +20,285 @@
    <string>Configurações</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="QIcon::ThemeIcon::FolderOpen"/>
+   <iconset theme="QIcon::ThemeIcon::FolderOpen">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <property name="windowOpacity">
    <double>0.900000000000000</double>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="labelLanguage">
-     <property name="locale">
-      <locale language="Portuguese" country="Brazil"/>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="text">
-      <string>Idioma</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QComboBox" name="cbLanguage">
-     <property name="locale">
-      <locale language="Portuguese" country="Brazil"/>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkExternalLinks">
-     <property name="locale">
-      <locale language="Portuguese" country="Brazil"/>
-     </property>
-     <property name="text">
-      <string>Abrir links externos no seu navegador.</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelWikiAddress">
-     <property name="locale">
-      <locale language="Portuguese" country="Brazil"/>
-     </property>
-     <property name="text">
-      <string>Endereço da wiki</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="leWikiAddress">
-     <property name="locale">
-      <locale language="Portuguese" country="Brazil"/>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="lbSearchAddress">
-     <property name="text">
-      <string>Endereço de pesquisa</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLineEdit" name="leSearchAddress"/>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelBookmarks">
-     <property name="locale">
-      <locale language="Portuguese" country="Brazil"/>
-     </property>
-     <property name="text">
-      <string>Favoritos</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QListWidget" name="lwFavorites">
-       <property name="locale">
-        <locale language="Portuguese" country="Brazil"/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Usuário</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QPushButton" name="btnFavoritesDelete">
-         <property name="locale">
-          <locale language="Portuguese" country="Brazil"/>
-         </property>
+        <widget class="QLabel" name="lbKeyCombos">
          <property name="text">
-          <string>Deletar</string>
+          <string>Atalhos do teclado</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnFavoritesAdd">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QTableWidget" name="twKeyCombos">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::NoSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectItems</enum>
+           </property>
+           <column>
+            <property name="text">
+             <string>Nome</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Combinação</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Código</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QPushButton" name="pbKeyCombosDelete">
+             <property name="text">
+              <string>Deletar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbKeyCombosAdd">
+             <property name="text">
+              <string>Adicionar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbKeyCombosEdit">
+             <property name="text">
+              <string>Editar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelBookmarks">
          <property name="locale">
           <locale language="Portuguese" country="Brazil"/>
          </property>
          <property name="text">
-          <string>Adicionar</string>
+          <string>Favoritos</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btnFavoritesEdit">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QListWidget" name="lwFavorites">
+           <property name="locale">
+            <locale language="Portuguese" country="Brazil"/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QPushButton" name="btnFavoritesDelete">
+             <property name="locale">
+              <locale language="Portuguese" country="Brazil"/>
+             </property>
+             <property name="text">
+              <string>Deletar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnFavoritesAdd">
+             <property name="locale">
+              <locale language="Portuguese" country="Brazil"/>
+             </property>
+             <property name="text">
+              <string>Adicionar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnFavoritesEdit">
+             <property name="locale">
+              <locale language="Portuguese" country="Brazil"/>
+             </property>
+             <property name="text">
+              <string>Editar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Navegador</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QCheckBox" name="checkExternalLinks">
          <property name="locale">
           <locale language="Portuguese" country="Brazil"/>
          </property>
          <property name="text">
-          <string>Editar</string>
+          <string>Abrir links externos no seu navegador.</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer">
+        <widget class="QLabel" name="labelWikiAddress">
+         <property name="locale">
+          <locale language="Portuguese" country="Brazil"/>
+         </property>
+         <property name="text">
+          <string>Endereço da wiki</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="leWikiAddress">
+         <property name="locale">
+          <locale language="Portuguese" country="Brazil"/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbSearchAddress">
+         <property name="text">
+          <string>Endereço de pesquisa</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="leSearchAddress"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelCustomJS">
+         <property name="text">
+          <string>JavaScript customizado</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="pteCustomJS"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Sistema</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <widget class="QLabel" name="labelLanguage">
+           <property name="locale">
+            <locale language="Portuguese" country="Brazil"/>
+           </property>
+           <property name="text">
+            <string>Idioma</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbLanguage">
+           <property name="locale">
+            <locale language="Portuguese" country="Brazil"/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="lbVersion">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnUpdater">
+           <property name="text">
+            <string>Atualizações</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
          <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
+          <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -145,135 +309,8 @@
         </spacer>
        </item>
       </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelCustomJS">
-     <property name="text">
-      <string>JavaScript customizado</string>
-     </property>
+     </widget>
     </widget>
-   </item>
-   <item>
-    <widget class="QPlainTextEdit" name="pteCustomJS"/>
-   </item>
-   <item>
-    <widget class="QLabel" name="lbKeyCombos">
-     <property name="text">
-      <string>Atalhos do teclado</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QTableWidget" name="twKeyCombos">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="editTriggers">
-        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
-       </property>
-       <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
-       </property>
-       <column>
-        <property name="text">
-         <string>Nome</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Combinação</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Código</string>
-        </property>
-       </column>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QPushButton" name="pbKeyCombosDelete">
-         <property name="text">
-          <string>Deletar</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pbKeyCombosAdd">
-         <property name="text">
-          <string>Adicionar</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pbKeyCombosEdit">
-         <property name="text">
-          <string>Editar</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="lbVersion">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnUpdater">
-       <property name="text">
-        <string>Atualizações</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

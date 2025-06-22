@@ -1,12 +1,8 @@
 {
     "files": [
-        "mainwindow.py",
+        "margarina.py",
         "form.ui",
         "settings.ui",
-        "logo.png",
-        "res.qrc",
-        "updater.ui",
-        "Updater.py",
         "Settings.py"
     ]
 }

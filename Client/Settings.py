@@ -2,9 +2,13 @@
 import os
 import json
 import resources
+import requests
+
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QApplication, QInputDialog, QTableWidgetItem
 from PySide6.QtCore import QFile, QIODevice, Qt, QSettings, QUrl, QTranslator, QCoreApplication
+from PySide6.QtWidgets import QApplication, QMessageBox, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtGui import QDesktopServices
 
 class Settings:
     def __init__(self, app, window):
@@ -84,7 +88,7 @@ class Settings:
         settings_dialog.btnFavoritesAdd.clicked.connect(lambda: add_favorite())
         settings_dialog.btnFavoritesEdit.clicked.connect(lambda: edit_favorite())
         # updater = Updater(self.version)
-        # settings_dialog.btnUpdater.clicked.connect(lambda: updater.open_updater())
+        settings_dialog.btnUpdater.clicked.connect(lambda: search_for_updates())
 
         def remove_favorite():
             settings_dialog.lwFavorites.takeItem(settings_dialog.lwFavorites.row(settings_dialog.lwFavorites.currentItem()))
@@ -229,6 +233,44 @@ class Settings:
                 settings_dialog.twKeyCombos.setItem(row_position, 1, QTableWidgetItem(combo.get("key_combination", "")))
                 settings_dialog.twKeyCombos.setItem(row_position, 2, QTableWidgetItem(combo.get("js_code", "")))
 
+        def search_for_updates():
+            latest_version, download_url = get_latest_release()
+            if latest_version and download_url:
+                if latest_version != self.version:
+                    if show_alert(
+                        QCoreApplication.translate("Settings", "Deseja atualizar?"),
+                        f"{QCoreApplication.translate('Settings', 'Uma nova versão desta aplicação foi encontrada:')} {latest_version}",
+                        QMessageBox.Ok | QMessageBox.Cancel,
+                        QMessageBox.Information
+                    ):
+                        QDesktopServices.openUrl(self.constants.get("update_link"))
+                else:
+                    show_alert(
+                        QCoreApplication.translate("Settings", "Atualizações"),
+                        QCoreApplication.translate("Settings", "Nenhuma atualização foi encontrada."),
+                        QMessageBox.Ok,
+                        QMessageBox.Information
+                    )
+
+        def get_latest_release():
+            url = self.constants.get("update_repo")
+            response = requests.get(url)
+            if response.status_code == 200:
+                release_data = response.json()
+                latest_version = release_data['tag_name']
+                download_url = release_data['assets'][0]['browser_download_url']
+                return latest_version, download_url
+            else:
+                return None, None
+
+        def show_alert(title, text, buttons = QMessageBox.Ok, icon = QMessageBox.Information):
+            msg_box = QMessageBox()
+            msg_box.setWindowTitle(title)
+            msg_box.setText(text)
+            msg_box.setIcon(icon)
+            msg_box.setStandardButtons(buttons)
+            return msg_box.exec()
+
         load_key_combos()
         settings_dialog.exec()
 
@@ -260,3 +302,4 @@ class Settings:
                 return int(setting)
             except ValueError:
                 return Qt.Unchecked
+
