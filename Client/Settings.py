@@ -7,7 +7,7 @@ import requests
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QApplication, QInputDialog, QTableWidgetItem
 from PySide6.QtCore import QFile, QIODevice, Qt, QSettings, QUrl, QTranslator, QCoreApplication
-from PySide6.QtWidgets import QApplication, QMessageBox, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QMessageBox
 from PySide6.QtGui import QDesktopServices
 
 class Settings:
@@ -16,6 +16,7 @@ class Settings:
         self.qsettings = QSettings("Margarina", "MargarinaWikiDesktop")
         self.initialize_settings()
         self.reload_settings()
+        self.selectionMode = self.defToSelectionMode
         self.translator = QTranslator(app)
         self.translator.load(self.language)
         app.installTranslator(self.translator)
@@ -29,6 +30,11 @@ class Settings:
         self.wikiAddress = QUrl(self.qsettings.value("settings/wikiAddress", type=str))
         self.searchAddress = QUrl(self.qsettings.value("settings/searchAddress", type=str))
         self.language = self.qsettings.value("settings/language", None)
+        self.zoom = float(self.qsettings.value("settings/zoom", None))
+        self.externalLinks = self.qsettings.value("settings/externalLinks", None)
+        self.customJavaScript = self.qsettings.value("settings/customJavaScript", None)
+        self.keyCombos = self.qsettings.value("settings/keyCombos", None)
+        self.defToSelectionMode = self.qsettings.value("settings/defToSelectionMode", None)
 
     def load_favorites(self):
         favorites_json = self.qsettings.value("settings/favorites", "[]")
@@ -42,11 +48,28 @@ class Settings:
             "language": ":/translations/en.qm",
             "customJavaScript" : "let i;",
             "favorites": "[]",
-            "externalLinks": "true"
+            "externalLinks": "true",
+            "defToSelectionMode" : "false",
+            "zoom": "1.00"
         }
         for name, value in default_settings.items():
             if self.qsettings.value(f"settings/{name}") is None:
                 self.qsettings.setValue(f"settings/{name}", value)
+
+    def change_setting(self, setting, value):
+        self.qsettings.setValue(f"settings/{setting}", value)
+        self.reload_settings()
+
+    def save_settings(self):
+        self.qsettings.setValue("settings/wikiAddress", self.wikiAddress)
+        self.qsettings.setValue("settings/searchAddress", self.searchAddress)
+        self.qsettings.setValue("settings/zoom", self.zoom)
+        self.qsettings.setValue("settings/language", self.language)
+        self.qsettings.setValue("settings/externalLinks", self.externalLinks)
+        self.qsettings.setValue("settings/wiki", self.wikiAddress)
+        self.qsettings.setValue("settings/customJavaScript", self.customJavaScript)
+        self.qsettings.setValue("settings/key_combos", self.keyCombos)
+        self.qsettings.setValue("settings/defToSelectionMode", self.defToSelectionMode)
 
     def get_constants(self):
         file = QFile(":constants.json")
@@ -69,26 +92,40 @@ class Settings:
         versiontxt = QCoreApplication.translate("Settings", "Versão: ")
         settings_dialog.lbVersion.setText(f"{versiontxt}{self.version}")
 
-        settings_dialog.checkExternalLinks.setCheckState(self.get_checkbox_state_config("externalLinks"))
-        settings_dialog.checkExternalLinks.stateChanged.connect(lambda state: self.qsettings.setValue("settings/externalLinks", state == 2))
+        # External links
+        settings_dialog.checkExternalLinks.setCheckState(self.get_checkbox_state(self.externalLinks))
+        settings_dialog.checkExternalLinks.stateChanged.connect(lambda state: self.change_setting("externalLinks", state == 2))
 
-        settings_dialog.leWikiAddress.setText(self.qsettings.value("settings/wikiAddress", type=str, defaultValue=""))
-        settings_dialog.leWikiAddress.editingFinished.connect(lambda: self.qsettings.setValue("settings/wikiAddress", settings_dialog.leWikiAddress.text()))
+        # External links
+        settings_dialog.checkSelectionMode.setCheckState(self.get_checkbox_state(self.defToSelectionMode))
+        settings_dialog.checkSelectionMode.stateChanged.connect(lambda state: self.change_setting("defToSelectionMode", state == 2))
 
-        settings_dialog.leSearchAddress.setText(self.qsettings.value("settings/searchAddress", type=str, defaultValue=""))
-        settings_dialog.leSearchAddress.editingFinished.connect(lambda: self.qsettings.setValue("settings/searchAddress", settings_dialog.leSearchAddress.text()))
+        # wikiAddress
+        settings_dialog.leWikiAddress.setText(self.wikiAddress.toString())
+        settings_dialog.leWikiAddress.editingFinished.connect(lambda: self.change_setting("wikiAddress", settings_dialog.leWikiAddress.text))
 
-        settings_dialog.pteCustomJS.appendPlainText(self.qsettings.value("settings/customJavaScript", type=str, defaultValue=""))
-        settings_dialog.pteCustomJS.textChanged.connect(lambda: self.qsettings.setValue("settings/customJavaScript", settings_dialog.pteCustomJS.toPlainText()))
+        # searchAddress
+        settings_dialog.leSearchAddress.setText(self.searchAddress.toString())
+        settings_dialog.leSearchAddress.editingFinished.connect(lambda: self.change_setting("searchAddress", settings_dialog.leSearchAddress.text))
 
+        # customJavaScript
+        settings_dialog.pteCustomJS.appendPlainText(self.customJavaScript)
+        settings_dialog.pteCustomJS.textChanged.connect(lambda: self.change_setting("customJavaScript", settings_dialog.pteCustomJS.text))
+
+        # Favorites
         for favorite in self.favorites:
             settings_dialog.lwFavorites.addItem(favorite)
 
         settings_dialog.btnFavoritesDelete.clicked.connect(lambda: remove_favorite())
         settings_dialog.btnFavoritesAdd.clicked.connect(lambda: add_favorite())
         settings_dialog.btnFavoritesEdit.clicked.connect(lambda: edit_favorite())
-        # updater = Updater(self.version)
         settings_dialog.btnUpdater.clicked.connect(lambda: search_for_updates())
+
+        # zoom
+        settings_dialog.dsZoomFactor.setValue(self.zoom)
+        settings_dialog.dsZoomFactor.valueChanged.connect(lambda: self.change_setting("zoom", settings_dialog.dsZoomFactor.value()))
+
+        # functions
 
         def remove_favorite():
             settings_dialog.lwFavorites.takeItem(settings_dialog.lwFavorites.row(settings_dialog.lwFavorites.currentItem()))
@@ -141,7 +178,7 @@ class Settings:
         def change_language(index):
             language_path = settings_dialog.cbLanguage.itemData(index)
             if language_path and self.translator.load(language_path):
-                self.qsettings.setValue("settings/language", language_path)
+                self.change_setting("language", language_path)
                 QApplication.instance().installTranslator(self.translator)
                 self.window.retranslate_ui()
             else:
@@ -217,7 +254,7 @@ class Settings:
                 key_combos.append({"title": title, "key_combination": key_combination, "js_code": js_code})
 
             key_combos_json = json.dumps(key_combos, indent=4)
-            self.qsettings.setValue("settings/key_combos", key_combos_json)
+            self.change_setting("key_combos", key_combos_json)
             load_key_combos()
 
         def load_key_combos():
@@ -289,17 +326,16 @@ class Settings:
             return None
 
 
-    def get_checkbox_state_config(self, name):
-        setting = self.qsettings.value(f"settings/{name}", type=str)
-        if setting is None:
+    def get_checkbox_state(self, string):
+        if string is None:
             return Qt.Unchecked
-        if setting.lower() == 'true':
+        if string.lower() == 'true':
             return Qt.Checked
-        elif setting.lower() == 'false':
+        elif string.lower() == 'false':
             return Qt.Unchecked
         else:
             try:
-                return int(setting)
+                return int(string)
             except ValueError:
                 return Qt.Unchecked
 

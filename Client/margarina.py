@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
         color: #fff;
         """)
         self.webEngineView.setUrl(self.settings.wikiAddress)
+        self.webEngineView.setZoomFactor(self.settings.zoom)
 
         self.webEngineView.loadFinished.connect(self.inject_scrollbar_styles)
 
@@ -193,11 +194,12 @@ class MainWindow(QMainWindow):
 
     def inject_scrollbar_styles(self, success):
         if success:
+            if not self.settings.selectionMode.lower() in ['true', '1', 'yes']:
+                self.inject_css("body {user-select: none;}")
             css = """
             body {
                 overflow: auto;
                 overflow-x: hidden;
-                user-select: none;
             }
             ::-webkit-scrollbar {
                 width: 12px; /* Width of the scrollbar */
@@ -212,17 +214,21 @@ class MainWindow(QMainWindow):
                 background: #000; /* Color of the scrollbar thumb on hover */
             }
             """
-            self.webEngineView.page().runJavaScript(f"""
-            var style = document.createElement('style');
-            style.innerHTML = `{css}`;
-            document.head.appendChild(style);
-            """)
+            self.inject_css(css)
+
+    def inject_css(self, css):
+        self.webEngineView.page().runJavaScript(f"""
+        var style = document.createElement('style');
+        style.innerHTML = `{css}`;
+        document.head.appendChild(style);
+        """)
 
     def on_load_finished(self, success):
         if success:
-            self.statusBar().showMessage(f"Page loaded successfully. ({self.webEngineView.url})")
+            self.statusBar().showMessage(f"Page loaded successfully. ({self.webEngineView.url().toString()})")
             self.webEngineView.page().runJavaScript(self.settings.read_from_resources(":default.js"))
             self.webEngineView.page().runJavaScript(self.settings.qsettings.value("settings/customJavaScript", type=str, defaultValue=""))
+            self.webEngineView.setZoomFactor(self.settings.zoom)
         else:
             self.statusBar().showMessage("Failed to load the page.")
 
@@ -231,8 +237,12 @@ class MainWindow(QMainWindow):
             self.close()
 
 
-if __name__ == "__main__":
+def start_app():
+    global app
     app = QApplication(sys.argv)
     widget = MainWindow()
     widget.show()
     sys.exit(app.exec())
+
+if __name__ == "__main__":
+    start_app()

@@ -8,3 +8,4 @@ Client/resources.py
 Client/rc_res.py
 Client/ui_*.py
 *.qtcreator/
+debian/usr/bin/*

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>386</width>
-    <height>509</height>
+    <width>391</width>
+    <height>528</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,7 +30,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -56,6 +56,15 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustIgnored</enum>
            </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
@@ -94,6 +103,12 @@
            </item>
            <item>
             <widget class="QPushButton" name="pbKeyCombosAdd">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Adicionar</string>
              </property>
@@ -108,6 +123,9 @@
            </item>
            <item>
             <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
@@ -143,6 +161,12 @@
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QPushButton" name="btnFavoritesDelete">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="locale">
               <locale language="Portuguese" country="Brazil"/>
              </property>
@@ -153,6 +177,12 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnFavoritesAdd">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="locale">
               <locale language="Portuguese" country="Brazil"/>
              </property>
@@ -163,6 +193,12 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnFavoritesEdit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="locale">
               <locale language="Portuguese" country="Brazil"/>
              </property>
@@ -173,6 +209,9 @@
            </item>
            <item>
             <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
@@ -199,6 +238,13 @@
          </property>
          <property name="text">
           <string>Abrir links externos no seu navegador.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkSelectionMode">
+         <property name="text">
+          <string>Iniciar no modo de seleção por padrão</string>
          </property>
         </widget>
        </item>
@@ -230,14 +276,48 @@
         <widget class="QLineEdit" name="leSearchAddress"/>
        </item>
        <item>
-        <widget class="QLabel" name="labelCustomJS">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="labelCustomJS">
+           <property name="text">
+            <string>JavaScript customizado</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>*</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="pteCustomJS"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelZoom">
          <property name="text">
-          <string>JavaScript customizado</string>
+          <string>Page zoom</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="pteCustomJS"/>
+        <widget class="QDoubleSpinBox" name="dsZoomFactor">
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>5.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.200000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -268,6 +348,19 @@
         </layout>
        </item>
        <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="lbVersion">
@@ -278,6 +371,9 @@
          </item>
          <item>
           <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
@@ -295,21 +391,35 @@
          </item>
         </layout>
        </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <italic>true</italic>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="text">
+      <string>* necessário recarregar</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>** necessário reiniciar</string>
+     </property>
     </widget>
    </item>
   </layout>

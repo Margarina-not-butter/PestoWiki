@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=MargarinaWiki
+Comment=Browser with focus on wikis, customization, and writing made using PySide6.
+Exec=margarinawiki
+Icon=/path/to/icon.png
+Terminal=false
+Categories=Utility;
