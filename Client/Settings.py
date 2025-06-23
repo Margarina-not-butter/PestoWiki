@@ -85,10 +85,6 @@ class Settings:
         settings_path = os.path.join(os.path.dirname(__file__), 'settings.ui')
         settings_dialog = loader.load(settings_path)
 
-        if(self.constants.get("disable_updater")):
-            settings_dialog.btnUpdater.setVisible(False)
-            settings_dialog.btnUpdater.deleteLater()
-
         versiontxt = QCoreApplication.translate("Settings", "Versão: ")
         settings_dialog.lbVersion.setText(f"{versiontxt}{self.version}")
 
