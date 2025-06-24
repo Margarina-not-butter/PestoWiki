@@ -14,6 +14,7 @@ class Settings:
     def __init__(self, app, window):
         self.window = window
         self.qsettings = QSettings("Margarina", "MargarinaWikiDesktop")
+        self.qshistory = QSettings("Margarina", "MargarinaWikiDesktopHistory")
         self.initialize_settings()
         self.reload_settings()
         self.selectionMode = self.defToSelectionMode
@@ -35,6 +36,9 @@ class Settings:
         self.customJavaScript = self.qsettings.value("settings/customJavaScript", None)
         self.keyCombos = self.qsettings.value("settings/keyCombos", None)
         self.defToSelectionMode = self.qsettings.value("settings/defToSelectionMode", None)
+        self.saveHistory = self.get_boolean_from_config(self.qsettings.value("settings/saveHistory", None))
+        self.history = self.qshistory.value("history", [], type=list)
+        self.historyMaxEntries = self.qsettings.value("settings/historyMaxEntries", 0, int)
 
     def load_favorites(self):
         favorites_json = self.qsettings.value("settings/favorites", "[]")
@@ -50,7 +54,9 @@ class Settings:
             "favorites": "[]",
             "externalLinks": "true",
             "defToSelectionMode" : "false",
-            "zoom": "1.00"
+            "zoom": "1.00",
+            "saveHistory" : "false",
+            "historyMaxEntries" : "50"
         }
         for name, value in default_settings.items():
             if self.qsettings.value(f"settings/{name}") is None:
@@ -59,6 +65,12 @@ class Settings:
     def change_setting(self, setting, value):
         self.qsettings.setValue(f"settings/{setting}", value)
         self.reload_settings()
+
+    def add_to_history(self, address):
+        if not self.history or self.history[-1] != address:
+            if len(self.history) >= self.historyMaxEntries:
+                self.history.pop(0)
+            self.history.append(address)
 
     def save_settings(self):
         self.qsettings.setValue("settings/wikiAddress", self.wikiAddress)
@@ -70,6 +82,8 @@ class Settings:
         self.qsettings.setValue("settings/customJavaScript", self.customJavaScript)
         self.qsettings.setValue("settings/key_combos", self.keyCombos)
         self.qsettings.setValue("settings/defToSelectionMode", self.defToSelectionMode)
+        self.qsettings.setValue("settings/saveHistory", self.saveHistory)
+        self.qsettings.setValue("settings/historyMaxEntries", self.historyMaxEntries)
 
     def get_constants(self):
         file = QFile(":constants.json")
@@ -92,21 +106,25 @@ class Settings:
         settings_dialog.checkExternalLinks.setCheckState(self.get_checkbox_state(self.externalLinks))
         settings_dialog.checkExternalLinks.stateChanged.connect(lambda state: self.change_setting("externalLinks", state == 2))
 
-        # External links
+        # Selection mode
         settings_dialog.checkSelectionMode.setCheckState(self.get_checkbox_state(self.defToSelectionMode))
         settings_dialog.checkSelectionMode.stateChanged.connect(lambda state: self.change_setting("defToSelectionMode", state == 2))
 
+        # saveHistory
+        settings_dialog.checkHistory.setChecked(self.saveHistory)
+        settings_dialog.checkHistory.stateChanged.connect(lambda state: self.change_setting("saveHistory", state == 2))
+
         # wikiAddress
         settings_dialog.leWikiAddress.setText(self.wikiAddress.toString())
-        settings_dialog.leWikiAddress.editingFinished.connect(lambda: self.change_setting("wikiAddress", settings_dialog.leWikiAddress.text))
+        settings_dialog.leWikiAddress.editingFinished.connect(lambda: self.change_setting("wikiAddress", settings_dialog.leWikiAddress.text()))
 
         # searchAddress
         settings_dialog.leSearchAddress.setText(self.searchAddress.toString())
-        settings_dialog.leSearchAddress.editingFinished.connect(lambda: self.change_setting("searchAddress", settings_dialog.leSearchAddress.text))
+        settings_dialog.leSearchAddress.editingFinished.connect(lambda: self.change_setting("searchAddress", settings_dialog.leSearchAddress.text()))
 
         # customJavaScript
         settings_dialog.pteCustomJS.appendPlainText(self.customJavaScript)
-        settings_dialog.pteCustomJS.textChanged.connect(lambda: self.change_setting("customJavaScript", settings_dialog.pteCustomJS.text))
+        settings_dialog.pteCustomJS.textChanged.connect(lambda: self.change_setting("customJavaScript", settings_dialog.pteCustomJS.toPlainText()))
 
         # Favorites
         for favorite in self.favorites:
@@ -322,6 +340,12 @@ class Settings:
             return None
 
 
+    def get_boolean_from_config(self, string):
+        if str(string).lower() == 'true':
+            return True
+        else:
+            return False
+
     def get_checkbox_state(self, string):
         if string is None:
             return Qt.Unchecked
@@ -335,3 +359,8 @@ class Settings:
             except ValueError:
                 return Qt.Unchecked
 
+    def settings_to_json(settings):
+        settings_dict = {}
+        for key in settings.allKeys():
+            settings_dict[key] = settings.value(key)
+        return json.dumps(settings_dict, indent=4)

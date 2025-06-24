@@ -6,5 +6,6 @@
         <file>translations/portuguese.qm</file>
         <file>translations/english.qm</file>
         <file>translations/japanese.qm</file>
+	<file>history.html</file>
     </qresource>
 </RCC>

@@ -3,11 +3,11 @@ import sys
 import os
 import json
 
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QVBoxLayout, QPushButton
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QUrl, QTranslator, QFile, QIODevice, QCoreApplication
+from PySide6.QtCore import QUrl, QTranslator, QFile, QIODevice, QCoreApplication, QTextStream
 from PySide6.QtGui import QDesktopServices, QAction, QIcon
 from Settings import Settings
 
@@ -24,7 +24,10 @@ class CustomWebEnginePage(QWebEnginePage):
     def acceptNavigationRequest(self, url: QUrl, isMainFrame: bool, action: QWebEnginePage.NavigationType) -> bool:
         my_domain = "margarina.rf.gd"
 
-        if my_domain not in url.host() and settings.qsettings.value("settings/externalLinks") == True:
+        if url.scheme() == "qrc" or url.scheme() == "data":
+            return True
+
+        if my_domain not in url.host():
             QDesktopServices.openUrl(url)
             return False
         return True
@@ -34,7 +37,6 @@ class CustomWebEngineView(QWebEngineView):
         super().__init__(parent)
 
         cookie_storage_path = os.path.join(os.path.expanduser("~"), ".margarinawiki_desktop")
-
         self.profile = QWebEngineProfile("MargarinaProfile", self)
         self.profile.setPersistentStoragePath(cookie_storage_path)
 
@@ -126,6 +128,23 @@ class MainWindow(QMainWindow):
         self.ui.actionPesquisar.triggered.connect(lambda: self.open_custom_url(self.settings.searchAddress))
         self.ui.actionPesquisar.setShortcut('Ctrl+Shift+K')
 
+        #actionMais
+        self.ui.actionMais.triggered.connect(lambda: add_to_zoom(0.1))
+        self.ui.actionMais.setShortcut('Alt+Z')
+
+        #actionMenos
+        self.ui.actionMenos.triggered.connect(lambda: add_to_zoom(-0.1))
+        self.ui.actionMenos.setShortcut('Alt+Shift+Z')
+
+        #actionHist_rico
+        self.ui.actionHist_rico.triggered.connect(lambda: self.show_history())
+        # self.ui.actionHist_rico.setShortcut('')
+
+        def add_to_zoom(factor):
+            finalzoom = self.settings.zoom + factor
+            self.webEngineView.setZoomFactor(self.settings.zoom + factor)
+            self.settings.change_setting("zoom", finalzoom)
+
         #actionOp_es_de_desesnvolvedor
         self.ui.actionOp_es_de_desenvolvedor.triggered.connect(lambda: self.webEngineView.page().runJavaScript(
             """
@@ -146,6 +165,34 @@ class MainWindow(QMainWindow):
         # Connecting webview to statusbar
         self.webEngineView.loadStarted.connect(self.on_load_started)
         self.webEngineView.loadFinished.connect(self.on_load_finished)
+
+    def show_history(self):
+        body = ""
+        for entry in self.settings.history:
+            body += f"<a href='{entry}'>{entry}</a><br>"
+        html = f"""
+        <style>body {{ background-color: black; color: white; }} a {{ color: gray; text-decoration: none; }}</style>
+        <body>
+        <h1>History</h1>
+        {body}
+        </body>
+        """
+
+        history_dialog = QDialog(self)
+        history_dialog.setWindowTitle("History")
+        history_dialog.resize(800, 600)
+        history_view = QWebEngineView(history_dialog)
+        history_view.setHtml(html, "")
+        layout = QVBoxLayout()
+        layout.addWidget(history_view)
+        close_button = QPushButton("Close")
+        close_button.clicked.connect(history_dialog.close)
+        layout.addWidget(close_button)
+        history_dialog.setLayout(layout)
+        history_dialog.exec()
+
+    def update_history(self):
+        self.settings.add_to_history(self.webEngineView.url().toString())
 
     def open_custom_url(self, prefix = ""):
         input_url, ok = self.settings.ask_for_input("",
@@ -229,6 +276,9 @@ class MainWindow(QMainWindow):
             self.webEngineView.page().runJavaScript(self.settings.read_from_resources(":default.js"))
             self.webEngineView.page().runJavaScript(self.settings.qsettings.value("settings/customJavaScript", type=str, defaultValue=""))
             self.webEngineView.setZoomFactor(self.settings.zoom)
+            if self.settings.saveHistory:
+                self.update_history()
+            print(self.settings.history)
         else:
             self.statusBar().showMessage("Failed to load the page.")
 

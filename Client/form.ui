@@ -19,11 +19,11 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QWebEngineView" name="webEngineView">
+     <widget class="QWebEngineView" name="webEngineView" native="true">
       <property name="locale">
        <locale language="Portuguese" country="Brazil"/>
       </property>
-      <property name="url">
+      <property name="url" stdset="0">
        <url>
         <string>about:blank</string>
        </url>
@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>902</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArquivo">
@@ -50,13 +50,25 @@
    </widget>
    <widget class="QMenu" name="menuWiki">
     <property name="title">
-     <string>Ir</string>
+     <string>Navegação</string>
     </property>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>Zoom</string>
+     </property>
+     <addaction name="actionMais"/>
+     <addaction name="actionMenos"/>
+    </widget>
+    <addaction name="menuZoom"/>
+    <addaction name="separator"/>
+    <addaction name="actionHist_rico"/>
+    <addaction name="separator"/>
     <addaction name="actionCustomizado"/>
     <addaction name="actionPesquisar"/>
     <addaction name="actionVoltar"/>
     <addaction name="actionPosterior"/>
     <addaction name="actionRecarregar"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuAjuda">
     <property name="locale">
@@ -224,7 +236,7 @@
   </action>
   <action name="actionCustomizado">
    <property name="text">
-    <string>Customizado</string>
+    <string>Ir</string>
    </property>
   </action>
   <action name="actionPesquisar">
@@ -245,6 +257,21 @@
   <action name="actionRecarregar">
    <property name="text">
     <string>Recarregar</string>
+   </property>
+  </action>
+  <action name="actionMais">
+   <property name="text">
+    <string>Mais</string>
+   </property>
+  </action>
+  <action name="actionMenos">
+   <property name="text">
+    <string>Menos</string>
+   </property>
+  </action>
+  <action name="actionHist_rico">
+   <property name="text">
+    <string>Histórico</string>
    </property>
   </action>
  </widget>
