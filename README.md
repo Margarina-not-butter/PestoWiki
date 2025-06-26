@@ -1,7 +1,7 @@
-# MargarinaWiki Desktop
+# PestoWiki
 Multi-platform customizable client for wikis written in Python using PySide6 (QT).
 
-![image](https://github.com/user-attachments/assets/1bb47120-dc75-44e4-a9c5-041f3d1419ef)
+![image](https://github.com/user-attachments/assets/87efa733-7021-47a9-8341-acbb9196a892)
 
 ## Features
  - [x] Editing shortcuts (bold, code, etc...)
