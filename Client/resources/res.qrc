@@ -6,6 +6,9 @@
         <file>translations/portuguese.qm</file>
         <file>translations/english.qm</file>
         <file>translations/japanese.qm</file>
-	<file>history.html</file>
+        <file>internal.html</file>
+        <file>about.html</file>
+        <file>internal.css</file>
+        <file>margarina.png</file>
     </qresource>
 </RCC>

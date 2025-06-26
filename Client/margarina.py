@@ -6,8 +6,8 @@ import json
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QVBoxLayout, QPushButton
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QUrl, QTranslator, QFile, QIODevice, QCoreApplication, QTextStream
+# from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QUrl, QTranslator, QFile, QCoreApplication, QTextStream
 from PySide6.QtGui import QDesktopServices, QAction, QIcon
 from Settings import Settings
 
@@ -18,31 +18,46 @@ from Settings import Settings
 from ui_form import Ui_MainWindow
 
 class CustomWebEnginePage(QWebEnginePage):
-    def __init__(self, profile, parent=None):
+    def __init__(self, profile, main_window, parent=None):
         super().__init__(profile, parent)
+        self.main_window = main_window
 
     def acceptNavigationRequest(self, url: QUrl, isMainFrame: bool, action: QWebEnginePage.NavigationType) -> bool:
-        my_domain = "margarina.rf.gd"
-
         if url.scheme() == "qrc" or url.scheme() == "data":
             return True
 
-        if my_domain not in url.host():
+        if self.main_window.settings.wikiAddress.host() not in url.host():
             QDesktopServices.openUrl(url)
             return False
         return True
 
 class CustomWebEngineView(QWebEngineView):
-    def __init__(self, parent=None):
+    def __init__(self, main_window, parent=None):
         super().__init__(parent)
 
-        cookie_storage_path = os.path.join(os.path.expanduser("~"), ".margarinawiki_desktop")
-        self.profile = QWebEngineProfile("MargarinaProfile", self)
+        cookie_storage_path = os.path.join(os.path.expanduser("~"), ".pestowiki")
+        self.profile = QWebEngineProfile("PestoProfile", self)
         self.profile.setPersistentStoragePath(cookie_storage_path)
 
-        self.setPage(CustomWebEnginePage(self.profile, self))
+        self.setPage(CustomWebEnginePage(self.profile, main_window, self))
+
 
 class MainWindow(QMainWindow):
+    class InternalWebEnginePage(QWebEnginePage):
+        def __init__(self, webEngineView, parent=None):
+            super().__init__(parent)
+            self.webEngineView = webEngineView
+
+        def acceptNavigationRequest(self, url: QUrl, isMainFrame: bool, action: QWebEnginePage.NavigationType) -> bool:
+            if url.scheme() == "data":
+                return True
+            self.webEngineView.setUrl(url)
+            return False
+
+    class InternalWebEngineView(QWebEngineView):
+        def __init__(self, webEngineView, parent=None):
+            super().__init__(parent)
+            self.setPage(MainWindow.InternalWebEnginePage(webEngineView, self))
 
     def retranslate_ui(self):
         self.ui.retranslateUi(self)
@@ -61,7 +76,10 @@ class MainWindow(QMainWindow):
         background-color: #000;
         color: #fff;
         """)
-        self.webEngineView.setUrl(self.settings.wikiAddress)
+        if self.settings.useLastPage and self.settings.lastPage:
+            self.webEngineView.setUrl(QUrl(self.settings.lastPage))
+        else:
+            self.webEngineView.setUrl(self.settings.wikiAddress)
         self.webEngineView.setZoomFactor(self.settings.zoom)
 
         self.webEngineView.loadFinished.connect(self.inject_scrollbar_styles)
@@ -93,8 +111,11 @@ class MainWindow(QMainWindow):
         self.ui.actionSair.setShortcut('Ctrl+Q')
 
         #actionSobre
-        self.ui.actionSobre.triggered.connect(lambda: self.webEngineView.page().runJavaScript("alert('MargarinaWiki Desktop, feito por Adrian Victor.')"))
+        self.ui.actionSobre.triggered.connect(lambda: self.show_about())
         self.ui.actionSobre.setShortcut('Alt+A')
+
+        self.ui.actionIn_cio_2.triggered.connect(lambda: self.webEngineView.setUrl(self.settings.wikiAddress))
+        self.ui.actionIn_cio_2.setShortcut('Alt+Shift+H')
 
         #actionSele_o
         self.ui.actionSele_o.triggered.connect(lambda: self.webEngineView.page().runJavaScript("document.querySelector('body').style.userSelect = 'text'"))
@@ -158,41 +179,44 @@ class MainWindow(QMainWindow):
         ))
         self.ui.actionOp_es_de_desenvolvedor.setShortcut('Ctrl+Shift+C')
 
-        # Connect the webEngineView signal to hide the QWebEngineView
         self.webEngineView.loadStarted.connect(lambda: self.webEngineView.setVisible(False))
         self.webEngineView.loadFinished.connect(lambda: self.webEngineView.setVisible(True))
-
-        # Connecting webview to statusbar
         self.webEngineView.loadStarted.connect(self.on_load_started)
         self.webEngineView.loadFinished.connect(self.on_load_finished)
+
+    def show_about(self):
+        content = QCoreApplication.translate(
+        "InternalPages",
+        "Pesto é feito com carinho pelo grupo Margarina, seu código está disponível na licensa MIT."
+        )
+        html = self.read(":about.html").format(version=self.settings.version,content=content)
+        self.load_internal_page(QCoreApplication.translate("InternalPages", "Sobre"), html)
 
     def show_history(self):
         body = ""
         for entry in self.settings.history:
-            body += f"<a href='{entry}'>{entry}</a><br>"
-        html = f"""
-        <style>body {{ background-color: black; color: white; }} a {{ color: gray; text-decoration: none; }}</style>
-        <body>
-        <h1>History</h1>
-        {body}
-        </body>
-        """
+            body += f"<a title{entry} href='{entry}'>{entry}</a><br>"
+        self.load_internal_page(QCoreApplication.translate("InternalPages", "Histórico"), body)
 
-        history_dialog = QDialog(self)
-        history_dialog.setWindowTitle("History")
-        history_dialog.resize(800, 600)
-        history_view = QWebEngineView(history_dialog)
-        history_view.setHtml(html, "")
+    def load_internal_page(self, title, body, footer = None):
+        if footer is None:
+                footer = QCoreApplication.translate('Settings',
+                    'Você está vendo uma página interna do Pesto.')
+        template = self.read(":internal.html")
+        html = template.format(title=title, body_content=body, footer=footer)
+        dialog = QDialog(self)
+        dialog.setWindowTitle("History")
+        dialog.resize(450, 350)
+        view = self.InternalWebEngineView(self.webEngineView, dialog)
+        view.loadFinished.connect(lambda: view.page().runJavaScript(f"""var style = document.createElement('style'); style.innerHTML = `{self.read(":internal.css")}`; document.head.appendChild(style);"""))
+        view.setHtml(html, "")
         layout = QVBoxLayout()
-        layout.addWidget(history_view)
-        close_button = QPushButton("Close")
-        close_button.clicked.connect(history_dialog.close)
-        layout.addWidget(close_button)
-        history_dialog.setLayout(layout)
-        history_dialog.exec()
+        layout.addWidget(view)
+        dialog.setLayout(layout)
+        dialog.exec()
 
     def update_history(self):
-        self.settings.add_to_history(self.webEngineView.url().toString())
+        self.settings.add_to_history(self.webEngineView.url())
 
     def open_custom_url(self, prefix = ""):
         input_url, ok = self.settings.ask_for_input("",
@@ -203,7 +227,7 @@ class MainWindow(QMainWindow):
             self.webEngineView.setUrl(QUrl(f"{prefix.toString()}{input_url}"))
 
     def on_load_started(self):
-        self.statusBar().showMessage("Loading...")
+        self.statusBar().showMessage(QCoreApplication.translate("Main_Window", "Carregando..."))
 
     def click(self, id):
         js_code = f'''
@@ -211,37 +235,9 @@ class MainWindow(QMainWindow):
         '''
         self.webEngineView.page().runJavaScript(js_code)
 
-    def paste_text(self, wrap_text_start, wrap_text_end = None):
-        if wrap_text_end is None:
-                wrap_text_end = wrap_text_start
-        js_code = f'''
-        var activeElement = document.activeElement;
-        var wrapTextStart = "{wrap_text_start}";
-        var wrapTextEnd = "{wrap_text_end}";
-
-        if (activeElement.tagName === 'TEXTAREA' || (activeElement.tagName === 'INPUT' && activeElement.type === 'text')) {{
-            var start = activeElement.selectionStart;
-            var end = activeElement.selectionEnd;
-            var selectedText = activeElement.value.substring(start, end);
-
-            activeElement.value = activeElement.value.substring(0, start) + wrapTextStart + selectedText + wrapTextEnd + activeElement.value.substring(end);
-
-            if (start === end) {{
-                var newCursorPosition = start + wrapTextStart.length;
-                activeElement.selectionStart = activeElement.selectionEnd = newCursorPosition;
-            }} else {{
-                var newCursorPosition = start + wrapTextStart.length + selectedText.length + wrapTextEnd.length;
-                activeElement.selectionStart = activeElement.selectionEnd = newCursorPosition;
-            }}
-        }} else {{
-            alert("Please focus on a textarea or input to paste the text.");
-        }}
-        '''
-        self.webEngineView.page().runJavaScript(js_code)
-
     def inject_scrollbar_styles(self, success):
         if success:
-            if not self.settings.selectionMode.lower() in ['true', '1', 'yes']:
+            if not str(self.settings.selectionMode).lower() in ['true', '1', 'yes']:
                 self.inject_css("body {user-select: none;}")
             css = """
             body {
@@ -272,20 +268,27 @@ class MainWindow(QMainWindow):
 
     def on_load_finished(self, success):
         if success:
-            self.statusBar().showMessage(f"Page loaded successfully. ({self.webEngineView.url().toString()})")
+            status_message = QCoreApplication.translate('Settings',
+                'Página carregada com sucesso. ({}).'.format(self.webEngineView.url().toString()))
+            self.statusBar().showMessage(status_message)
             self.webEngineView.page().runJavaScript(self.settings.read_from_resources(":default.js"))
             self.webEngineView.page().runJavaScript(self.settings.qsettings.value("settings/customJavaScript", type=str, defaultValue=""))
             self.webEngineView.setZoomFactor(self.settings.zoom)
-            if self.settings.saveHistory:
-                self.update_history()
-            print(self.settings.history)
+            self.update_history()
         else:
-            self.statusBar().showMessage("Failed to load the page.")
+            status_message = QCoreApplication.translate('Settings',
+                'Erro ao carregar a página. ({}).'.format(self.webEngineView.url().toString()))
+            self.statusBar().showMessage(status_message)
 
     def exit_application(self):
-            self.statusBar().showMessage("Exiting the application...")
             self.close()
 
+    def read(self, path):
+        file = QFile(path)
+        if file.open(QFile.ReadOnly | QFile.Text):
+            text_stream = QTextStream(file)
+            return text_stream.readAll()
+        return ""
 
 def start_app():
     global app

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MargarinaWiki</string>
+   <string>Pesto</string>
   </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>
@@ -19,11 +19,11 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QWebEngineView" name="webEngineView" native="true">
+     <widget class="QWebEngineView" name="webEngineView">
       <property name="locale">
        <locale language="Portuguese" country="Brazil"/>
       </property>
-      <property name="url" stdset="0">
+      <property name="url">
        <url>
         <string>about:blank</string>
        </url>
@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>902</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArquivo">
@@ -59,6 +59,7 @@
      <addaction name="actionMais"/>
      <addaction name="actionMenos"/>
     </widget>
+    <addaction name="actionIn_cio_2"/>
     <addaction name="menuZoom"/>
     <addaction name="separator"/>
     <addaction name="actionHist_rico"/>
@@ -272,6 +273,11 @@
   <action name="actionHist_rico">
    <property name="text">
     <string>Histórico</string>
+   </property>
+  </action>
+  <action name="actionIn_cio_2">
+   <property name="text">
+    <string>Início</string>
    </property>
   </action>
  </widget>

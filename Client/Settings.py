@@ -13,8 +13,8 @@ from PySide6.QtGui import QDesktopServices
 class Settings:
     def __init__(self, app, window):
         self.window = window
-        self.qsettings = QSettings("Margarina", "MargarinaWikiDesktop")
-        self.qshistory = QSettings("Margarina", "MargarinaWikiDesktopHistory")
+        self.qsettings = QSettings("Margarina", "PestoWiki")
+        self.qshistory = QSettings("Margarina", "PestoWikiHistory")
         self.initialize_settings()
         self.reload_settings()
         self.selectionMode = self.defToSelectionMode
@@ -32,13 +32,33 @@ class Settings:
         self.searchAddress = QUrl(self.qsettings.value("settings/searchAddress", type=str))
         self.language = self.qsettings.value("settings/language", None)
         self.zoom = float(self.qsettings.value("settings/zoom", None))
-        self.externalLinks = self.qsettings.value("settings/externalLinks", None)
+        self.externalLinks = self.get_boolean_from_config(self.qsettings.value("settings/externalLinks", None))
         self.customJavaScript = self.qsettings.value("settings/customJavaScript", None)
-        self.keyCombos = self.qsettings.value("settings/keyCombos", None)
-        self.defToSelectionMode = self.qsettings.value("settings/defToSelectionMode", None)
+        self.keyCombos = self.qsettings.value("settings/key_combos", None)
+        self.defToSelectionMode = self.get_boolean_from_config(self.qsettings.value("settings/defToSelectionMode", None))
         self.saveHistory = self.get_boolean_from_config(self.qsettings.value("settings/saveHistory", None))
         self.history = self.qshistory.value("history", [], type=list)
         self.historyMaxEntries = self.qsettings.value("settings/historyMaxEntries", 0, int)
+        self.lastPage = QUrl(self.qshistory.value("lastPage", None))
+        self.useLastPage = self.get_boolean_from_config(self.qsettings.value("settings/useLastPage", None))
+
+    def save_settings(self):
+        try:
+            self.qsettings.setValue("settings/wikiAddress", self.wikiAddress.toString())
+            self.qsettings.setValue("settings/searchAddress", self.searchAddress.toString())
+            self.qsettings.setValue("settings/zoom", str(self.zoom))
+            self.qsettings.setValue("settings/language", str(self.language))
+            self.qsettings.setValue("settings/externalLinks", str(self.externalLinks))
+            self.qsettings.setValue("settings/customJavaScript", str(self.customJavaScript))
+            self.qsettings.setValue("settings/key_combos", self.keyCombos)
+            self.qsettings.setValue("settings/defToSelectionMode", str(self.defToSelectionMode))
+            self.qsettings.setValue("settings/saveHistory", str(self.saveHistory))
+            self.qsettings.setValue("settings/historyMaxEntries", str(self.historyMaxEntries))
+            self.qsettings.setValue("settings/useLastPage", str(self.useLastPage))
+            self.qshistory.setValue("lastPage", self.lastPage.toString())
+            self.qshistory.setValue("history", self.history)
+        except Exception as e:
+            print(f"Error saving settings: {e}")
 
     def load_favorites(self):
         favorites_json = self.qsettings.value("settings/favorites", "[]")
@@ -46,8 +66,8 @@ class Settings:
 
     def initialize_settings(self):
         default_settings = {
-            "wikiAddress": "http://margarina.rf.gd/mediawiki/index.php/",
-            "searchAddress": "http://margarina.rf.gd/mediawiki/index.php?search=",
+            "wikiAddress": "https://margarina.rf.gd/mediawiki/index.php/",
+            "searchAddress": "https://margarina.rf.gd/mediawiki/index.php?search=",
             "key_combos": "[\n    {\n        \"title\": \"Bold\",\n        \"key_combination\": \"Ctrl+B\",\n        \"js_code\": \"_around(\\\"\\\\'\\\\'\\\\'\\\", \\\"\\\\'\\\\'\\\\'\\\");\"\n    },\n    {\n        \"title\": \"Italic\",\n        \"key_combination\": \"Ctrl+I\",\n        \"js_code\": \"_around(\\\"\\\\'\\\\'\\\", \\\"\\\\'\\\\'\\\");\"\n    },\n    {\n        \"title\": \"Heading\",\n        \"key_combination\": \"Ctrl+H\",\n        \"js_code\": \"i = prompt(\\\"Heading level\\\"); if (_isNumeric(i)) { _mwHeading(i); }\"\n    },\n    {\n        \"title\": \"List\",\n        \"key_combination\": \"Ctrl+L\",\n        \"js_code\": \"_around(\\\"* \\\",\\\"\\\");\"\n    },\n    {\n        \"title\": \"Numbered List\",\n        \"key_combination\": \"Ctrl+Alt+L\",\n        \"js_code\": \"_around(\\\"# \\\", \\\"\\\");\"\n    },\n    {\n        \"title\": \"Preformatted text block\",\n        \"key_combination\": \"Ctrl+P\",\n        \"js_code\": \"_around(\\\"<nowiki>\\\", \\\"</nowiki>\\\");\"\n    },\n    {\n        \"title\": \"Code\",\n        \"key_combination\": \"Ctrl+U\",\n        \"js_code\": \"_around(\\\"<code>\\\", \\\"</code>\\\");\"\n    },\n    {\n        \"title\": \"Quote\",\n        \"key_combination\": \"Ctrl+J\",\n        \"js_code\": \"_around(\\\"<q>\\\", \\\"</q>\\\");\"\n    },\n    {\n        \"title\": \"Blockquote\",\n        \"key_combination\": \"Ctrl+Shift+J\",\n        \"js_code\": \"_around(\\\"<blockquote>\\\", \\\"</blockquote>\\\");\"\n    },\n    {\n        \"title\": \"Comment\",\n        \"key_combination\": \"Ctrl+/\",\n        \"js_code\": \"_around(\\\"<!-- \\\", \\\" -->\\\");\"\n    }\n]",
             "language": ":/translations/en.qm",
             "customJavaScript" : "let i;",
@@ -56,34 +76,42 @@ class Settings:
             "defToSelectionMode" : "false",
             "zoom": "1.00",
             "saveHistory" : "false",
-            "historyMaxEntries" : "50"
+            "historyMaxEntries" : "50",
+            "useLastPage" : "true",
         }
-        for name, value in default_settings.items():
-            if self.qsettings.value(f"settings/{name}") is None:
-                self.qsettings.setValue(f"settings/{name}", value)
+        default_history = {
+            "lastPage" : "https://margarina.rf.gd/mediawiki/index.php/"
+        }
+        def default(qs, pref, list):
+            for name, value in list.items():
+                if qs.value(f"{pref}{name}") is None:
+                    qs.setValue(f"{pref}{name}", value)
+
+        default(self.qsettings, "settings/", default_settings)
+        default(self.qshistory, "", default_history)
 
     def change_setting(self, setting, value):
         self.qsettings.setValue(f"settings/{setting}", value)
+        print(f"setting {setting} to {value}")
         self.reload_settings()
 
     def add_to_history(self, address):
-        if not self.history or self.history[-1] != address:
+        if not self.history or self.history[-1] != address and self.saveHistory:
             if len(self.history) >= self.historyMaxEntries:
                 self.history.pop(0)
-            self.history.append(address)
+            self.history.append(address.toString())
+            self.save_settings()
+            self.reload_settings()
+        if self.useLastPage:
+            self.lastPage = address
+            self.save_settings()
+            self.reload_settings()
 
-    def save_settings(self):
-        self.qsettings.setValue("settings/wikiAddress", self.wikiAddress)
-        self.qsettings.setValue("settings/searchAddress", self.searchAddress)
-        self.qsettings.setValue("settings/zoom", self.zoom)
-        self.qsettings.setValue("settings/language", self.language)
-        self.qsettings.setValue("settings/externalLinks", self.externalLinks)
-        self.qsettings.setValue("settings/wiki", self.wikiAddress)
-        self.qsettings.setValue("settings/customJavaScript", self.customJavaScript)
-        self.qsettings.setValue("settings/key_combos", self.keyCombos)
-        self.qsettings.setValue("settings/defToSelectionMode", self.defToSelectionMode)
-        self.qsettings.setValue("settings/saveHistory", self.saveHistory)
-        self.qsettings.setValue("settings/historyMaxEntries", self.historyMaxEntries)
+    def clear_history(self):
+        self.history = ""
+        self.lastPage = ""
+        self.save_settings()
+        self.reload_settings()
 
     def get_constants(self):
         file = QFile(":constants.json")
@@ -102,31 +130,21 @@ class Settings:
         versiontxt = QCoreApplication.translate("Settings", "Versão: ")
         settings_dialog.lbVersion.setText(f"{versiontxt}{self.version}")
 
-        # External links
         settings_dialog.checkExternalLinks.setCheckState(self.get_checkbox_state(self.externalLinks))
         settings_dialog.checkExternalLinks.stateChanged.connect(lambda state: self.change_setting("externalLinks", state == 2))
-
-        # Selection mode
         settings_dialog.checkSelectionMode.setCheckState(self.get_checkbox_state(self.defToSelectionMode))
         settings_dialog.checkSelectionMode.stateChanged.connect(lambda state: self.change_setting("defToSelectionMode", state == 2))
-
-        # saveHistory
         settings_dialog.checkHistory.setChecked(self.saveHistory)
         settings_dialog.checkHistory.stateChanged.connect(lambda state: self.change_setting("saveHistory", state == 2))
-
-        # wikiAddress
+        settings_dialog.cbLastPage.setChecked(self.useLastPage)
+        settings_dialog.cbLastPage.stateChanged.connect(lambda state: self.change_setting("useLastPage", state == 2))
         settings_dialog.leWikiAddress.setText(self.wikiAddress.toString())
         settings_dialog.leWikiAddress.editingFinished.connect(lambda: self.change_setting("wikiAddress", settings_dialog.leWikiAddress.text()))
-
-        # searchAddress
         settings_dialog.leSearchAddress.setText(self.searchAddress.toString())
         settings_dialog.leSearchAddress.editingFinished.connect(lambda: self.change_setting("searchAddress", settings_dialog.leSearchAddress.text()))
-
-        # customJavaScript
         settings_dialog.pteCustomJS.appendPlainText(self.customJavaScript)
         settings_dialog.pteCustomJS.textChanged.connect(lambda: self.change_setting("customJavaScript", settings_dialog.pteCustomJS.toPlainText()))
 
-        # Favorites
         for favorite in self.favorites:
             settings_dialog.lwFavorites.addItem(favorite)
 
@@ -135,11 +153,14 @@ class Settings:
         settings_dialog.btnFavoritesEdit.clicked.connect(lambda: edit_favorite())
         settings_dialog.btnUpdater.clicked.connect(lambda: search_for_updates())
 
-        # zoom
         settings_dialog.dsZoomFactor.setValue(self.zoom)
         settings_dialog.dsZoomFactor.valueChanged.connect(lambda: self.change_setting("zoom", settings_dialog.dsZoomFactor.value()))
-
-        # functions
+        settings_dialog.sbHistoryEntries.setValue(self.historyMaxEntries)
+        settings_dialog.sbHistoryEntries.valueChanged.connect(lambda: self.change_setting("historyMaxEntries", settings_dialog.sbHistoryEntries.value()))
+        settings_dialog.pbClearHistory.clicked.connect(lambda: self.clear_history())
+        settings_dialog.pbKeyCombosDelete.clicked.connect(lambda: remove_key_combo())
+        settings_dialog.pbKeyCombosAdd.clicked.connect(lambda: add_key_combo())
+        settings_dialog.pbKeyCombosEdit.clicked.connect(lambda: edit_key_combo())
 
         def remove_favorite():
             settings_dialog.lwFavorites.takeItem(settings_dialog.lwFavorites.row(settings_dialog.lwFavorites.currentItem()))
@@ -200,31 +221,27 @@ class Settings:
 
         settings_dialog.cbLanguage.currentIndexChanged.connect(change_language)
 
-        settings_dialog.pbKeyCombosDelete.clicked.connect(lambda: remove_key_combo())
-        settings_dialog.pbKeyCombosAdd.clicked.connect(lambda: add_key_combo())
-        settings_dialog.pbKeyCombosEdit.clicked.connect(lambda: edit_key_combo())
-
         def remove_key_combo():
             current_row = settings_dialog.twKeyCombos.currentRow()
-            if current_row >= 0:  # Check if a row is selected
+            if current_row >= 0:
                 settings_dialog.twKeyCombos.removeRow(current_row)
                 save_key_combos_to_settings()
 
         def add_key_combo():
             title, ok1 = self.ask_for_input(
-                "Settings",  # Use a string for context
+                "Settings",
                 QCoreApplication.translate("Settings", "Adicionar combinação de teclas"),
                 QCoreApplication.translate("Settings", "Por favor, digite o título:")
             )
 
             key_combination, ok2 = self.ask_for_input(
-                "Settings",  # Use a string for context
+                "Settings",
                 QCoreApplication.translate("Settings", "Adicionar combinação de teclas"),
                 QCoreApplication.translate("Settings", "Por favor, digite a combinação:")
             )
 
             js_code, ok3 = self.ask_for_input(
-                "Settings",  # Use a string for context
+                "Settings",
                 QCoreApplication.translate("Settings", "Adicionar combinação de teclas"),
                 QCoreApplication.translate("Settings", "Por favor, digite o código JavaScript:")
             )
@@ -239,7 +256,7 @@ class Settings:
 
         def edit_key_combo():
             current_row = settings_dialog.twKeyCombos.currentRow()
-            if current_row >= 0:  # Check if a row is selected
+            if current_row >= 0:
                 title, ok1 = self.ask_for_input(self,
                                             QCoreApplication.translate("Settings", "Editar combinação de teclas"),
                                             QCoreApplication.translate("Settings", "Por favor, digite o novo título:"),
@@ -272,9 +289,7 @@ class Settings:
             load_key_combos()
 
         def load_key_combos():
-            key_combos_json = self.qsettings.value("settings/key_combos", "[]")
-            key_combos = json.loads(key_combos_json)
-
+            key_combos = json.loads(self.keyCombos)
             settings_dialog.twKeyCombos.setRowCount(0)
 
             for combo in key_combos:
@@ -347,6 +362,7 @@ class Settings:
             return False
 
     def get_checkbox_state(self, string):
+        string = str(string)
         if string is None:
             return Qt.Unchecked
         if string.lower() == 'true':

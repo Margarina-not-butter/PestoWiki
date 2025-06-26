@@ -1,0 +1,31 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    background-color: black;
+    gap: 10px;
+    padding: 10vh 10vw 10vh 10vw;
+    /* overflow: hidden; */
+    max-width: 90vw;
+    margin: auto;
+    user-select: none;
+}
+
+a {
+    display: inline-block;
+    max-width: 100%;
+    color: gray;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-lines: 1;
+}
+
+a:hover {
+    color: white;
+}
+
+footer {
+    padding-top: 8px;
+    margin-top: 18px;
+    border-top: 4px solid white;
+}
