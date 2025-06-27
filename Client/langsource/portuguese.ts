@@ -204,17 +204,17 @@
 <context>
     <name>InternalPages</name>
     <message>
-        <location filename="../margarina.py" line="192"/>
+        <location filename="../margarina.py" line="153"/>
         <source>Pesto é feito com carinho pelo grupo Margarina, seu código está disponível na licensa MIT.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../margarina.py" line="193"/>
+        <location filename="../margarina.py" line="154"/>
         <source>Sobre</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../margarina.py" line="199"/>
+        <location filename="../margarina.py" line="160"/>
         <source>Histórico</source>
         <translation></translation>
     </message>
@@ -433,17 +433,17 @@
 <context>
     <name>Main_Window</name>
     <message>
-        <location filename="../margarina.py" line="223"/>
+        <location filename="../margarina.py" line="186"/>
         <source>Acessar endereço</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../margarina.py" line="225"/>
+        <location filename="../margarina.py" line="188"/>
         <source>Por favor, digite o endereço:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../margarina.py" line="230"/>
+        <location filename="../margarina.py" line="193"/>
         <source>Carregando...</source>
         <translation></translation>
     </message>
@@ -451,93 +451,93 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../Settings.py" line="131"/>
+        <location filename="../Settings.py" line="132"/>
         <source>Versão: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="171"/>
+        <location filename="../Settings.py" line="172"/>
         <source>Adicionar favorito</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="172"/>
+        <location filename="../Settings.py" line="173"/>
         <source>Por favor, digite endereço da página:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="179"/>
+        <location filename="../Settings.py" line="180"/>
         <source>Editar favorito</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="180"/>
+        <location filename="../Settings.py" line="181"/>
         <source>Por favor, digite o novo endereço da página:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="233"/>
-        <location filename="../Settings.py" line="239"/>
-        <location filename="../Settings.py" line="245"/>
+        <location filename="../Settings.py" line="234"/>
+        <location filename="../Settings.py" line="240"/>
+        <location filename="../Settings.py" line="246"/>
         <source>Adicionar combinação de teclas</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="235"/>
+        <location filename="../Settings.py" line="236"/>
         <source>Por favor, digite o título:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="241"/>
+        <location filename="../Settings.py" line="242"/>
         <source>Por favor, digite a combinação:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="247"/>
+        <location filename="../Settings.py" line="248"/>
         <source>Por favor, digite o código JavaScript:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="261"/>
-        <location filename="../Settings.py" line="265"/>
-        <location filename="../Settings.py" line="269"/>
+        <location filename="../Settings.py" line="262"/>
+        <location filename="../Settings.py" line="266"/>
+        <location filename="../Settings.py" line="270"/>
         <source>Editar combinação de teclas</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="262"/>
+        <location filename="../Settings.py" line="263"/>
         <source>Por favor, digite o novo título:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="266"/>
+        <location filename="../Settings.py" line="267"/>
         <source>Por favor, digite a nova combinação:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="270"/>
+        <location filename="../Settings.py" line="271"/>
         <source>Por favor, digite o novo código JavaScript:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="307"/>
+        <location filename="../Settings.py" line="308"/>
         <source>Deseja atualizar?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="315"/>
+        <location filename="../Settings.py" line="316"/>
         <source>Atualizações</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="316"/>
+        <location filename="../Settings.py" line="317"/>
         <source>Nenhuma atualização foi encontrada.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../margarina.py" line="205"/>
-        <source>Você está vendo uma página interna do Pesto.</source>
-        <translation></translation>
+        <location filename="../margarina.py" line="165"/>
+        <source>Você está vendo uma página interna.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

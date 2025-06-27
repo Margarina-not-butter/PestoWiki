@@ -80,7 +80,7 @@ class Settings:
             "useLastPage" : "true",
         }
         default_history = {
-            "lastPage" : "https://margarina.rf.gd/mediawiki/index.php/"
+            "lastPage" : self.qsettings.value("settings/wikiAddress", type=str)
         }
         def default(qs, pref, list):
             for name, value in list.items():
@@ -126,10 +126,12 @@ class Settings:
         loader = QUiLoader()
         settings_path = os.path.join(os.path.dirname(__file__), 'settings.ui')
         settings_dialog = loader.load(settings_path)
+        settings_dialog.parent = self.window
 
         versiontxt = QCoreApplication.translate("Settings", "Versão: ")
-        settings_dialog.lbVersion.setText(f"{versiontxt}{self.version}")
 
+        # Gross UI defs
+        settings_dialog.lbVersion.setText(f"{versiontxt}{self.version}")
         settings_dialog.checkExternalLinks.setCheckState(self.get_checkbox_state(self.externalLinks))
         settings_dialog.checkExternalLinks.stateChanged.connect(lambda state: self.change_setting("externalLinks", state == 2))
         settings_dialog.checkSelectionMode.setCheckState(self.get_checkbox_state(self.defToSelectionMode))
@@ -144,15 +146,10 @@ class Settings:
         settings_dialog.leSearchAddress.editingFinished.connect(lambda: self.change_setting("searchAddress", settings_dialog.leSearchAddress.text()))
         settings_dialog.pteCustomJS.appendPlainText(self.customJavaScript)
         settings_dialog.pteCustomJS.textChanged.connect(lambda: self.change_setting("customJavaScript", settings_dialog.pteCustomJS.toPlainText()))
-
-        for favorite in self.favorites:
-            settings_dialog.lwFavorites.addItem(favorite)
-
         settings_dialog.btnFavoritesDelete.clicked.connect(lambda: remove_favorite())
         settings_dialog.btnFavoritesAdd.clicked.connect(lambda: add_favorite())
         settings_dialog.btnFavoritesEdit.clicked.connect(lambda: edit_favorite())
         settings_dialog.btnUpdater.clicked.connect(lambda: search_for_updates())
-
         settings_dialog.dsZoomFactor.setValue(self.zoom)
         settings_dialog.dsZoomFactor.valueChanged.connect(lambda: self.change_setting("zoom", settings_dialog.dsZoomFactor.value()))
         settings_dialog.sbHistoryEntries.setValue(self.historyMaxEntries)
@@ -161,6 +158,9 @@ class Settings:
         settings_dialog.pbKeyCombosDelete.clicked.connect(lambda: remove_key_combo())
         settings_dialog.pbKeyCombosAdd.clicked.connect(lambda: add_key_combo())
         settings_dialog.pbKeyCombosEdit.clicked.connect(lambda: edit_key_combo())
+
+        for favorite in self.favorites:
+            settings_dialog.lwFavorites.addItem(favorite)
 
         def remove_favorite():
             settings_dialog.lwFavorites.takeItem(settings_dialog.lwFavorites.row(settings_dialog.lwFavorites.currentItem()))

@@ -2,7 +2,11 @@
     <qresource>
         <file>constants.json</file>
         <file>default.js</file>
+        <file>default.css</file>
+        <file>eruda.js</file>
         <file>logo.png</file>
+        <file>logo_square.png</file>
+        <file>logo_mini.png</file>
         <file>translations/portuguese.qm</file>
         <file>translations/english.qm</file>
         <file>translations/japanese.qm</file>
@@ -10,5 +14,6 @@
         <file>about.html</file>
         <file>internal.css</file>
         <file>margarina.png</file>
+        <file>wviewstylesheet.css</file>
     </qresource>
 </RCC>

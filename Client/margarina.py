@@ -17,6 +17,7 @@ from Settings import Settings
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_MainWindow
 
+# Custom WebEnginePage/View for redirecting pages outside wiki domain to external browser
 class CustomWebEnginePage(QWebEnginePage):
     def __init__(self, profile, main_window, parent=None):
         super().__init__(profile, parent)
@@ -41,9 +42,8 @@ class CustomWebEngineView(QWebEngineView):
 
         self.setPage(CustomWebEnginePage(self.profile, main_window, self))
 
-
-class MainWindow(QMainWindow):
-    class InternalWebEnginePage(QWebEnginePage):
+# Custom WebEnginePage/View for redirecting non-internal pages to the main WEP 
+class InternalWebEnginePage(QWebEnginePage):
         def __init__(self, webEngineView, parent=None):
             super().__init__(parent)
             self.webEngineView = webEngineView
@@ -54,11 +54,12 @@ class MainWindow(QMainWindow):
             self.webEngineView.setUrl(url)
             return False
 
-    class InternalWebEngineView(QWebEngineView):
-        def __init__(self, webEngineView, parent=None):
-            super().__init__(parent)
-            self.setPage(MainWindow.InternalWebEnginePage(webEngineView, self))
+class InternalWebEngineView(QWebEngineView):
+    def __init__(self, webEngineView, parent=None):
+        super().__init__(parent)
+        self.setPage(InternalWebEnginePage(webEngineView, self))
 
+class MainWindow(QMainWindow):
     def retranslate_ui(self):
         self.ui.retranslateUi(self)
 
@@ -66,27 +67,22 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
         self.settings = Settings(app, self)
-
-        self.setWindowIcon(QIcon(":logo.png"))
-
+        self.globalWVStyleSheet = self.read(":wviewstylesheet.css")
+        self.setWindowIcon(QIcon(":logo_mini.png"))
         self.webEngineView = CustomWebEngineView(self)
         self.setCentralWidget(self.webEngineView)
-        self.webEngineView.setStyleSheet("""
-        background-color: #000;
-        color: #fff;
-        """)
+        self.webEngineView.setStyleSheet(self.globalWVStyleSheet)
         if self.settings.useLastPage and self.settings.lastPage:
             self.webEngineView.setUrl(QUrl(self.settings.lastPage))
         else:
             self.webEngineView.setUrl(self.settings.wikiAddress)
         self.webEngineView.setZoomFactor(self.settings.zoom)
 
-        self.webEngineView.loadFinished.connect(self.inject_scrollbar_styles)
-
         favCount = 0
 
-        #Loading favorites
+        # Loading favorites
         for favorite in self.settings.favorites:
             favCount += 1
             action = QAction(favorite, self)
@@ -94,6 +90,7 @@ class MainWindow(QMainWindow):
             action.triggered.connect(lambda: self.webEngineView.setUrl(f"{self.settings.wikiAddress.toString()}{favorite}"))
             self.ui.menuWiki.addAction(action)
 
+        # Loading key combos
         key_combos_json = self.settings.qsettings.value("settings/key_combos", "[]")
         key_combos = json.loads(key_combos_json)
         for combo in key_combos:
@@ -102,88 +99,52 @@ class MainWindow(QMainWindow):
             action.triggered.connect(lambda checked, js_code=combo.get("js_code"): runCustomJS(js_code))
             self.ui.menuInserir.addAction(action)
 
-
         def runCustomJS(code):
             self.webEngineView.page().runJavaScript(code)
 
-        #actionSair
+        # Gross UI definitions
         self.ui.actionSair.triggered.connect(self.exit_application)
         self.ui.actionSair.setShortcut('Ctrl+Q')
-
-        #actionSobre
         self.ui.actionSobre.triggered.connect(lambda: self.show_about())
         self.ui.actionSobre.setShortcut('Alt+A')
-
         self.ui.actionIn_cio_2.triggered.connect(lambda: self.webEngineView.setUrl(self.settings.wikiAddress))
         self.ui.actionIn_cio_2.setShortcut('Alt+Shift+H')
-
-        #actionSele_o
         self.ui.actionSele_o.triggered.connect(lambda: self.webEngineView.page().runJavaScript("document.querySelector('body').style.userSelect = 'text'"))
         self.ui.actionSele_o.setShortcut('Ctrl+S')
-
-        #actionNavega_o
         self.ui.actionNavega_o.triggered.connect(lambda: self.webEngineView.page().runJavaScript("document.querySelector('body').style.userSelect = 'none'"))
         self.ui.actionNavega_o.setShortcut('Ctrl+W')
-
-        #actionPrefer_ncias
         self.ui.actionPrefer_ncias.triggered.connect(lambda: self.settings.open_settings())
         self.ui.actionPrefer_ncias.setShortcut('Alt+P')
-
-        #actionCustomizado
         self.ui.actionCustomizado.triggered.connect(lambda: self.open_custom_url(self.settings.wikiAddress))
         self.ui.actionCustomizado.setShortcut('Ctrl+Shift+L')
-
-        #actionAnterior
         self.ui.actionVoltar.triggered.connect(lambda: self.webEngineView.back())
         self.ui.actionVoltar.setShortcut('Alt+Left')
-
-        #actionPosterior
         self.ui.actionPosterior.triggered.connect(lambda: self.webEngineView.forward())
         self.ui.actionPosterior.setShortcut('Alt+Right')
-
-        #actionRecarregar
         self.ui.actionRecarregar.triggered.connect(lambda: self.webEngineView.reload())
         self.ui.actionRecarregar.setShortcut('F5')
-
-        #actionPesquisar
         self.ui.actionPesquisar.triggered.connect(lambda: self.open_custom_url(self.settings.searchAddress))
         self.ui.actionPesquisar.setShortcut('Ctrl+Shift+K')
-
-        #actionMais
         self.ui.actionMais.triggered.connect(lambda: add_to_zoom(0.1))
         self.ui.actionMais.setShortcut('Alt+Z')
-
-        #actionMenos
         self.ui.actionMenos.triggered.connect(lambda: add_to_zoom(-0.1))
         self.ui.actionMenos.setShortcut('Alt+Shift+Z')
-
-        #actionHist_rico
         self.ui.actionHist_rico.triggered.connect(lambda: self.show_history())
-        # self.ui.actionHist_rico.setShortcut('')
-
-        def add_to_zoom(factor):
-            finalzoom = self.settings.zoom + factor
-            self.webEngineView.setZoomFactor(self.settings.zoom + factor)
-            self.settings.change_setting("zoom", finalzoom)
-
-        #actionOp_es_de_desesnvolvedor
-        self.ui.actionOp_es_de_desenvolvedor.triggered.connect(lambda: self.webEngineView.page().runJavaScript(
-            """
-            (function () {
-                var script = document.createElement('script');
-                script.src = '//cdn.jsdelivr.net/npm/eruda';
-                document.body.appendChild(script);
-                script.onload = function () { eruda.init(); };
-            })();
-            """
-        ))
-        self.ui.actionOp_es_de_desenvolvedor.setShortcut('Ctrl+Shift+C')
-
+        self.ui.actionHist_rico.setShortcut('Ctrl+Shift+H')
+        self.ui.actionOp_es_de_desenvolvedor.deleteLater()
+        # self.ui.actionOp_es_de_desenvolvedor.triggered.connect(lambda: self.webEngineView.page().runJavaScript("_importJS('qrc:/eruda.js')"))
+        # self.ui.actionOp_es_de_desenvolvedor.setShortcut('Ctrl+Shift+C')
         self.webEngineView.loadStarted.connect(lambda: self.webEngineView.setVisible(False))
         self.webEngineView.loadFinished.connect(lambda: self.webEngineView.setVisible(True))
         self.webEngineView.loadStarted.connect(self.on_load_started)
         self.webEngineView.loadFinished.connect(self.on_load_finished)
 
+
+        def add_to_zoom(factor):
+            finalzoom = self.settings.zoom + factor
+            self.webEngineView.setZoomFactor(self.settings.zoom + factor)
+            self.settings.change_setting("zoom", finalzoom)
+        
     def show_about(self):
         content = QCoreApplication.translate(
         "InternalPages",
@@ -199,15 +160,17 @@ class MainWindow(QMainWindow):
         self.load_internal_page(QCoreApplication.translate("InternalPages", "Histórico"), body)
 
     def load_internal_page(self, title, body, footer = None):
+        footer_translated = QCoreApplication.translate('Settings',
+                    'Você está vendo uma página interna.')
         if footer is None:
-                footer = QCoreApplication.translate('Settings',
-                    'Você está vendo uma página interna do Pesto.')
+                footer = footer_translated
+        self.statusBar().showMessage(footer)
         template = self.read(":internal.html")
         html = template.format(title=title, body_content=body, footer=footer)
         dialog = QDialog(self)
         dialog.setWindowTitle("History")
         dialog.resize(450, 350)
-        view = self.InternalWebEngineView(self.webEngineView, dialog)
+        view = InternalWebEngineView(self.webEngineView, dialog)
         view.loadFinished.connect(lambda: view.page().runJavaScript(f"""var style = document.createElement('style'); style.innerHTML = `{self.read(":internal.css")}`; document.head.appendChild(style);"""))
         view.setHtml(html, "")
         layout = QVBoxLayout()
@@ -229,35 +192,11 @@ class MainWindow(QMainWindow):
     def on_load_started(self):
         self.statusBar().showMessage(QCoreApplication.translate("Main_Window", "Carregando..."))
 
-    def click(self, id):
-        js_code = f'''
-            document.querySelector('#tool__bar button[accesskey="{id}"]').click();
-        '''
-        self.webEngineView.page().runJavaScript(js_code)
-
-    def inject_scrollbar_styles(self, success):
-        if success:
-            if not str(self.settings.selectionMode).lower() in ['true', '1', 'yes']:
-                self.inject_css("body {user-select: none;}")
-            css = """
-            body {
-                overflow: auto;
-                overflow-x: hidden;
-            }
-            ::-webkit-scrollbar {
-                width: 12px; /* Width of the scrollbar */
-            }
-            ::-webkit-scrollbar-track {
-                background: #1f1f1f; /* Background of the scrollbar track */
-            }
-            ::-webkit-scrollbar-thumb {
-                background: #888; /* Color of the scrollbar thumb */
-            }
-            ::-webkit-scrollbar-thumb:hover {
-                background: #000; /* Color of the scrollbar thumb on hover */
-            }
-            """
-            self.inject_css(css)
+    def apply_default_styles(self):
+        if not str(self.settings.selectionMode).lower() in ['true', '1', 'yes']:
+            self.inject_css("body {user-select: none;}")
+        css = self.read("default.css")
+        self.inject_css(css)
 
     def inject_css(self, css):
         self.webEngineView.page().runJavaScript(f"""
@@ -268,6 +207,7 @@ class MainWindow(QMainWindow):
 
     def on_load_finished(self, success):
         if success:
+            self.apply_default_styles()
             status_message = QCoreApplication.translate('Settings',
                 'Página carregada com sucesso. ({}).'.format(self.webEngineView.url().toString()))
             self.statusBar().showMessage(status_message)
