@@ -1,9 +1,9 @@
 [Desktop Entry]
-Version=1.0
+Version=1.0.0
 Type=Application
-Name=MargarinaWiki
+Name=PestoWiki
 Comment=Browser with focus on wikis, customization, and writing made using PySide6.
-Exec=margarinawiki
-Icon=/path/to/icon.png
+Exec=pestowiki
+# Icon=/path/to/icon.png
 Terminal=false
 Categories=Utility;

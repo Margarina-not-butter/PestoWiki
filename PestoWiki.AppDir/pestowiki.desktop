@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=PestoWiki
+Exec=/usr/bin/margarina.py
+Icon=/logo
+Type=Application
+Categories=Utility;Application;

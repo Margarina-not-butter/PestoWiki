@@ -1,0 +1,40 @@
+#!/bin/bash
+
+REQUIRED_DEPENDENCIES=(
+    "PySide6"
+    "requests"
+)
+
+check_dependency() {
+    python3 -c "import $1" 2>/dev/null
+    return $?
+}
+
+run_pesto() {
+    exec python3 $APPDIR/usr/bin/margarina.py
+}
+
+if [ "$1" == "--skip-deps" ]; then
+    echo "Skipping dependency verification."
+    run_pesto
+fi
+
+missing_dependencies=()
+
+for dependency in "${REQUIRED_DEPENDENCIES[@]}"; do
+    if ! check_dependency "$dependency"; then
+        missing_dependencies+=("$dependency")
+    fi
+done
+
+if [ ${#missing_dependencies[@]} -eq 0 ]; then
+    echo "All required dependencies are installed."
+    run_pesto
+else
+    echo "The following dependencies are missing:"
+    for missing in "${missing_dependencies[@]}"; do
+        echo "- $missing"
+    done
+    echo "Please install the missing dependencies using pip:"
+    echo "pip install ${missing_dependencies[*]}"
+fi

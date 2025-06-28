@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='margarinawikidesktop',
+    name='PestoWiki'
     version='1.0',
     packages=find_packages(),
     install_requires=[
@@ -10,7 +10,7 @@ setup(
     ],
     entry_points={
         'gui_scripts': [
-            'margarinawiki=margarinawikidesktop.margarina:start_app',
+            'pestowiki=pestowiki.margarina:start_app',
         ],
     },
 )

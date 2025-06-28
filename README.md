@@ -24,8 +24,14 @@ Multi-platform customizable client for wikis written in Python using PySide6 (QT
 python -m venv .venv
 pip install -r requirements.txt
 ```
-- Generate `resources.py` using `buildresource.sh`. (Currently there are no scripts for compiling translations and resources files on Windows, but I guess that the commands from the scripts for Linux should work.)
-- Optionally, compile it with PyInstaller:
+- Generate `resources.py` using `buildresource.sh`. (It works just fine with Git Bash on Windows.)
+
+## Packaging
+### AppImage
+For packaging Pesto into an AppImage you'll need AppImageTool. To package it just run `yourappimagetool.AppImage PestoWiki.AppDir`, this will produce an AppImage without any dependencies, you'll have to figure this manually if you want those (create an AppImage from the output of PyInstaller - guide below). The system running the AppImage will need `PySide6` and `requests` Python modules installed.
+
+### With PyInstaller
+PyInstaller will generate a HUGE (~400mb) folder with a single binary and all the dependencies in a folder that should be shipped with the binary for it to work (you can package the dependencies folder together with the binary but that will be a great hit on performance, as it will have to unpack everything when the app is launched). The repo already has a `spec` file that is used by PyInstaller to build the application, you can build it with the following command:
 ```
 python -m PyInstaller margarina.spec
 ```

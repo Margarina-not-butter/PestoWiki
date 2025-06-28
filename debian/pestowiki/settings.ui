@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>450</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Configurações</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="QIcon::ThemeIcon::FolderOpen"/>
+  </property>
+  <property name="windowOpacity">
+   <double>0.900000000000000</double>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="QWidget" name="tabUser">
+      <attribute name="title">
+       <string>Usuário</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QScrollArea" name="saTabUser">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>408</width>
+            <height>452</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <layout class="QHBoxLayout" name="layoutLbKeyCombosLabel">
+             <item>
+              <widget class="QLabel" name="lbKeyCombos">
+               <property name="text">
+                <string>Atalhos do teclado</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelLbKeyCombosIndicator">
+               <property name="accessibleDescription">
+                <string>É necessário reiniciar.</string>
+               </property>
+               <property name="text">
+                <string>**</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutKeyCombos">
+             <item>
+              <widget class="QTableWidget" name="twKeyCombos">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="accessibleDescription">
+                <string>Lista de atalhos definidos.</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Raised</enum>
+               </property>
+               <property name="sizeAdjustPolicy">
+                <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustIgnored</enum>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
+               </property>
+               <column>
+                <property name="text">
+                 <string>Nome</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Combinação</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Código</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="layoutKeyCombosButtons">
+               <item>
+                <widget class="QPushButton" name="pbKeyCombosAdd">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="accessibleDescription">
+                  <string>Adiciona um novo atalho.</string>
+                 </property>
+                 <property name="text">
+                  <string>Adicionar</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pbKeyCombosDelete">
+                 <property name="accessibleDescription">
+                  <string>Deleta o atalho selecionado.</string>
+                 </property>
+                 <property name="text">
+                  <string>Deletar</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pbKeyCombosEdit">
+                 <property name="accessibleDescription">
+                  <string>Edita o atalho selecionado</string>
+                 </property>
+                 <property name="text">
+                  <string>Editar</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutLabelBookmark">
+             <item>
+              <widget class="QLabel" name="labelBookmarks">
+               <property name="locale">
+                <locale language="Portuguese" country="Brazil"/>
+               </property>
+               <property name="text">
+                <string>Favoritos</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelBookmarksIndicator">
+               <property name="accessibleDescription">
+                <string>É necessário reiniciar.</string>
+               </property>
+               <property name="text">
+                <string>**</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutFavorites">
+             <item>
+              <widget class="QListWidget" name="lwFavorites">
+               <property name="accessibleDescription">
+                <string>Lista de favoritados.</string>
+               </property>
+               <property name="locale">
+                <locale language="Portuguese" country="Brazil"/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="layoutFavoritesButtons">
+               <item>
+                <widget class="QPushButton" name="btnFavoritesAdd">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="accessibleDescription">
+                  <string>Adiciona um favorito.</string>
+                 </property>
+                 <property name="locale">
+                  <locale language="Portuguese" country="Brazil"/>
+                 </property>
+                 <property name="text">
+                  <string>Adicionar</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnFavoritesDelete">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="accessibleDescription">
+                  <string>Deleta o favorito selecionado.</string>
+                 </property>
+                 <property name="locale">
+                  <locale language="Portuguese" country="Brazil"/>
+                 </property>
+                 <property name="text">
+                  <string>Deletar</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnFavoritesEdit">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="accessibleDescription">
+                  <string>Edita o favorito selecionado.</string>
+                 </property>
+                 <property name="locale">
+                  <locale language="Portuguese" country="Brazil"/>
+                 </property>
+                 <property name="text">
+                  <string>Editar</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabBrowser">
+      <attribute name="title">
+       <string>Navegador</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QScrollArea" name="saBrowser">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>408</width>
+            <height>452</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="QCheckBox" name="checkExternalLinks">
+             <property name="locale">
+              <locale language="Portuguese" country="Brazil"/>
+             </property>
+             <property name="text">
+              <string>Abrir links externos no seu navegador.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkSelectionMode">
+             <property name="text">
+              <string>Iniciar no modo de seleção por padrão</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelWikiAddress">
+             <property name="locale">
+              <locale language="Portuguese" country="Brazil"/>
+             </property>
+             <property name="text">
+              <string>Endereço da wiki</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="leWikiAddress">
+             <property name="locale">
+              <locale language="Portuguese" country="Brazil"/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lbSearchAddress">
+             <property name="text">
+              <string>Endereço de pesquisa</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="leSearchAddress"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutLabelCustomJS">
+             <item>
+              <widget class="QLabel" name="labelCustomJS">
+               <property name="text">
+                <string>JavaScript customizado</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelIndicatorCustomJS">
+               <property name="accessibleDescription">
+                <string>É necessário recarregar.</string>
+               </property>
+               <property name="text">
+                <string>*</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPlainTextEdit" name="pteCustomJS"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="layoutLabelZoom">
+             <item>
+              <widget class="QLabel" name="labelZoom">
+               <property name="text">
+                <string>Page zoom</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelIndicatorZoom">
+               <property name="accessibleDescription">
+                <string>É necessário recarregar.</string>
+               </property>
+               <property name="text">
+                <string>*</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="dsZoomFactor">
+             <property name="minimum">
+              <double>0.000000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>5.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.200000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabSystem">
+      <attribute name="title">
+       <string>Sistema</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <widget class="QScrollArea" name="saSystem">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>408</width>
+            <height>452</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QCheckBox" name="checkHistory">
+                 <property name="text">
+                  <string>Salvar histórico de navegação.</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pbClearHistory">
+                 <property name="text">
+                  <string>Limpar histórico</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelHistoryEntries">
+               <property name="text">
+                <string>Tamanho do histórico (em páginas):</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="sbHistoryEntries"/>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="cbLastPage">
+               <property name="text">
+                <string>Continuar de onde você parou.</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelLanguage">
+               <property name="locale">
+                <locale language="Portuguese" country="Brazil"/>
+               </property>
+               <property name="text">
+                <string>Idioma</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cbLanguage">
+               <property name="locale">
+                <locale language="Portuguese" country="Brazil"/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="spacerSaSystem">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="layoutUpdater">
+               <item>
+                <widget class="QLabel" name="lbVersion">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Orientation::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnUpdater">
+                 <property name="text">
+                  <string>Atualizações</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutCaptions">
+     <item>
+      <widget class="QLabel" name="captionRestart">
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <italic>true</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string>** necessário reiniciar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="captionReload">
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <italic>true</italic>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>* necessário recarregar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacerCaptions">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

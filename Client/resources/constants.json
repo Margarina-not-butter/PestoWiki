@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
-    "update_link": "https://github.com/margarina-not-butter/MargarinaWikiDesktop/releases/latest",
-    "update_repo": "https://api.github.com/repos/margarina-not-butter/MargarinaWikiDesktop/releases/latest"
+    "version": "1.0.0-rc1",
+    "update_link": "https://github.com/margarina-not-butter/PestoWiki/releases/latest",
+    "update_repo": "https://api.github.com/repos/margarina-not-butter/PestoWiki/releases/latest"
 }
