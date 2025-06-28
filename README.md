@@ -1,7 +1,7 @@
 # PestoWiki
 Multi-platform customizable client for wikis written in Python using PySide6 (QT).
 
-![image](https://github.com/user-attachments/assets/87efa733-7021-47a9-8341-acbb9196a892)
+![Screenshot_20250628_172806](https://github.com/user-attachments/assets/0d5afeba-cfd3-403a-8405-b3f4a0153645)
 
 ## Features
  - [x] Editing shortcuts (bold, code, etc...)
