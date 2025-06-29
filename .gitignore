@@ -1,4 +1,5 @@
 dist/
+Output/
 build/
 */__pycache__
 */.idea
