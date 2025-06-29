@@ -33,6 +33,6 @@ For packaging Pesto into an AppImage you'll need AppImageTool. To package it jus
 ### With PyInstaller
 PyInstaller will generate a HUGE (~400mb) folder with a single binary and all the dependencies in a folder that should be shipped with the binary for it to work (you can package the dependencies folder together with the binary but that will be a great hit on performance, as it will have to unpack everything when the app is launched). The repo already has a `spec` file that is used by PyInstaller to build the application, you can build it with the following command:
 ```
-python -m PyInstaller margarina.spec
+python -m PyInstaller pesto.spec
 ```
 It will be compiled to `./dist`.
