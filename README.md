@@ -27,6 +27,9 @@ pip install -r requirements.txt
 - Generate `resources.py` using `buildresource.sh`. (It works just fine with Git Bash on Windows.)
 
 ## Packaging
+
+<img src="https://github.com/user-attachments/assets/86185670-548b-49ce-b14e-2b8652855660" width="150" align="right"/>
+
 ### AppImage
 For packaging Pesto into an AppImage you'll need AppImageTool. To package it just run `yourappimagetool.AppImage PestoWiki.AppDir`, this will produce an AppImage without any dependencies, you'll have to figure this manually if you want those (create an AppImage from the output of PyInstaller - guide below). The system running the AppImage will need `PySide6` and `requests` Python modules installed.
 
