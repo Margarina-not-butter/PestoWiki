@@ -475,86 +475,86 @@
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../Settings.py" line="132"/>
+        <location filename="../Settings.py" line="134"/>
         <source>Versão: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="172"/>
+        <location filename="../Settings.py" line="171"/>
         <source>Adicionar favorito</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="173"/>
+        <location filename="../Settings.py" line="172"/>
         <source>Por favor, digite endereço da página:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="180"/>
+        <location filename="../Settings.py" line="179"/>
         <source>Editar favorito</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="181"/>
+        <location filename="../Settings.py" line="180"/>
         <source>Por favor, digite o novo endereço da página:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="234"/>
-        <location filename="../Settings.py" line="240"/>
-        <location filename="../Settings.py" line="246"/>
+        <location filename="../Settings.py" line="233"/>
+        <location filename="../Settings.py" line="239"/>
+        <location filename="../Settings.py" line="245"/>
         <source>Adicionar combinação de teclas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="236"/>
+        <location filename="../Settings.py" line="235"/>
         <source>Por favor, digite o título:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="242"/>
+        <location filename="../Settings.py" line="241"/>
         <source>Por favor, digite a combinação:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="248"/>
+        <location filename="../Settings.py" line="247"/>
         <source>Por favor, digite o código JavaScript:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="262"/>
-        <location filename="../Settings.py" line="266"/>
-        <location filename="../Settings.py" line="270"/>
+        <location filename="../Settings.py" line="261"/>
+        <location filename="../Settings.py" line="265"/>
+        <location filename="../Settings.py" line="269"/>
         <source>Editar combinação de teclas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="263"/>
+        <location filename="../Settings.py" line="262"/>
         <source>Por favor, digite o novo título:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="267"/>
+        <location filename="../Settings.py" line="266"/>
         <source>Por favor, digite a nova combinação:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="271"/>
+        <location filename="../Settings.py" line="270"/>
         <source>Por favor, digite o novo código JavaScript:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="308"/>
+        <location filename="../Settings.py" line="307"/>
         <source>Deseja atualizar?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="316"/>
+        <location filename="../Settings.py" line="315"/>
         <source>Atualizações</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Settings.py" line="317"/>
+        <location filename="../Settings.py" line="316"/>
         <source>Nenhuma atualização foi encontrada.</source>
         <translation type="unfinished"></translation>
     </message>
