@@ -259,6 +259,10 @@ class MainWindow(QMainWindow):
     def exit_application(self):
             self.close()
 
+    def closeEvent(self, event):
+        self.webEngineView.closeEvent(event)
+        super().closeEvent(event)
+
     def read(self, path):
         file = QFile(path)
         if file.open(QFile.ReadOnly | QFile.Text):
