@@ -41,3 +41,6 @@ PyInstaller will generate a HUGE (~400mb) folder with a single binary and all th
 python -m PyInstaller pesto.spec
 ```
 It will be compiled to `./dist`.
+
+### For MacOS users
+Currently I cannot support releases for any MacOS versions as it's not an friendly enviroment for developers who have no iDevices available. Feel free to share MacOS builds you made yourself to me and I will link them here.
