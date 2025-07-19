@@ -16,7 +16,7 @@ Multi-platform customizable client for wikis written in Python using PySide6 (QT
  - [x] Custom JS library with wiki related functions
  - [x] Favorites
  - [x] Check for updates
- - [ ] Share button
+ - [x] Share button (_Browsing > Copy current page's address_)
 
 ## How to compile
 - Clone the repo and install `requirements.txt` in a venv (optional) with:
