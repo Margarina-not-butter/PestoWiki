@@ -1,6 +1,8 @@
 # PestoWiki
 Multi-platform customizable client for wikis written in Python using PySide6 (QT).
 
+_PestoWiki is mostly tested in my MediaWiki instance, the default shortcuts are designed for MediaWiki but can be changed as needed. Any in compatibilities with DokuWiki or other wiki softwares can be added as an issue in this repo's issues tab_
+
 ![Screenshot_20250628_172806](https://github.com/user-attachments/assets/0d5afeba-cfd3-403a-8405-b3f4a0153645)
 
 ## Features
