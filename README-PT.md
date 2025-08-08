@@ -37,12 +37,12 @@ pip install -r requirements.txt
 ### AppImage
 Para empacotar Pesto em um AppImage, você precisará do AppImageTool. Para empacotar rode `yourappimagetool.AppImage PestoWiki.AppDir`, isso vai gerar um arquivo AppImage sem nenhuma dependência, se quiser, você pode encontrar alguma forma de empacotá-las (crie um AppImage do resultado do PyInstaller - guia abaixo). O sistema rodando o AppImage precisará dos módulos `PySide6` e `requests` instalados.
 
-### With PyInstaller
-PyInstaller will generate a HUGE (~400mb) folder with a single binary and all the dependencies in a folder that should be shipped with the binary for it to work (you can package the dependencies folder together with the binary but that will be a great hit on performance, as it will have to unpack everything when the app is launched). The repo already has a `spec` file that is used by PyInstaller to build the application, you can build it with the following command:
+### Com o PyInstaller
+PyInstaller vai gerar uma pasta GRANDE (~400mb) com um unico binário e uma pasta que deve ser distribuida junto com ele para que a aplicação funcione (você pode empacotar as dependências no binário, mas isso tem um imenso imapcto na performance, já que será necessário desempacotar tudo na hora de rodar a aplicação). O repositório já tem um arquivo `spec` que é usado pelo PyInstaller para gerar a aplicação, você pode empacotar ele com o comando a seguir:
 ```
 python -m PyInstaller pesto.spec
 ```
-It will be compiled to `./dist`.
+O resultado estará em `./dist`.
 
-### For MacOS users
-Currently I cannot support releases for any MacOS versions as it's not an friendly enviroment for developers who have no iDevices available. Feel free to share MacOS builds you made yourself to me and I will link them here.
+### Para usuários do MacOS
+Não posso suportar o MacOS agora pois a Apple não oferece nenhum ambiênte favorável fora dos iDevices. Esteja livre para me informar de builds próprias para MacOS e eu as listarei aqui.
