@@ -1,3 +1,5 @@
+[Português Brasileiro](README-PT.md)
+
 # PestoWiki
 Multi-platform customizable client for wikis written in Python using PySide6 (QT).
 
